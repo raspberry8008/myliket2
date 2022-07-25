@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.myliket2.myliket.TodoMapper">
+
+    <!-- getTodoList: 할일 목록 전체조회 -->
+    <select id="getTodoList"  resultType="TodoVO">
+        /*getTodoList*/
+        SELECT
+            todoNo
+             , todoTitle
+             , todoContent
+             , todoDay
+             , todoTime
+             , todoState
+        FROM
+            tododetail
+        WHERE
+            todoState = 'TR'
+        GROUP BY
+            todoNo
+        ORDER BY
+            todoDay ASC
+               , todoTime IS NULL ASC
+               , todoTime ASC
+    </select>
+
+    <!-- getTodoDetail : 할일 상세조회 -->
+    <select id="getTodoDetail" parameterType="java.lang.Integer" resultType="TodoVO">
+        /*getTodoDetail*/
+        SELECT
+            todoNo
+             , todoTitle
+             , todoContent
+             , DATE_FORMAT(todoDay, '%Y%m%d') AS todoDay
+             , DATE_FORMAT(todoTime, '%H%i%s') AS todoTime
+             , todoState
+        FROM
+            tododetail
+        WHERE
+            todoNo = #{todoNo}
+    </select>
+
+    <!-- insertTodo : 할일 등록하기 -->
+    <insert id="insertTodo" parameterType="TodoVO" useGeneratedKeys="true" keyProperty="todoNo" >
+        /*insertTodo*/
+        INSERT INTO
+			tododetail
+            (
+                todoTitle
+                , todoContent
+                , todoDay
+                , todoTime
+                , todoState
+                , todoCreatedAt
+            )
+
+		VALUES
+			(
+		        #{todoTitle}
+              , #{todoContent}
+              , #{todoDay}
+              , #{todoTime}
+              , 'TR'
+              , now()
+        )
+        ON DUPLICATE KEY UPDATE todoNo = LAST_INSERT_ID() + 1
+    </insert>
+
+    <!-- updateTodo : 할일 수정하기 -->
+    <update id="updateTodo" parameterType="TodoVO">
+        /*updateTodo*/
+        UPDATE
+            tododetail
+        SET
+            todoTitle=#{todoTitle}
+          , todoContent=#{todoContent}
+          , todoDay=  DATE_FORMAT(#{todoDay}, '%Y%m%d')
+          , todoTime=DATE_FORMAT(#{todoTime}, '%H%i%s')
+          , todoUpdatedAt=now()
+        WHERE
+            todoNo=#{todoNo}
+    </update>
+
+    <!--deleteTodo : 할일 삭제 -->
+    <delete id="deleteTodo" parameterType="java.lang.Integer" >
+        /*deleteTodo*/
+        DELETE
+        FROM
+            tododetail
+        WHERE
+            todoNo=#{todoNo}
+    </delete>
+
+</mapper>
