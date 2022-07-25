@@ -1,4 +1,4 @@
-package com.myliket2.myliket.comtroller;
+package com.myliket2.myliket.controller;
 
 import com.myliket2.myliket.service.TodoService;
 import com.myliket2.myliket.util.Message;
@@ -16,8 +16,8 @@ import java.util.List;
 @RequestMapping("/todos")
 public class TodoRestController {
 
-    private TodoService todoService;
-    private Message message;
+    private final TodoService todoService;
+    private final Message message;
 
     public TodoRestController(TodoService todoService, Message message) {
         this.todoService = todoService;

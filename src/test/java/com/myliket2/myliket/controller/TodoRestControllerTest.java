@@ -1,4 +1,4 @@
-package com.myliket2.myliket.comtroller;
+package com.myliket2.myliket.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myliket2.myliket.service.TodoService;
