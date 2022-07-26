@@ -45,10 +45,10 @@ class TodoRestControllerTest {
     @DisplayName("할일 상세조회 테스트")
     @Test
     void getTodoDetail() throws Exception {
-        mockMvc.perform(get("/todos/2")
+        mockMvc.perform(get("/todos/100")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
+                .andExpect(status().is(204))
                 .andDo(print());
 
     }

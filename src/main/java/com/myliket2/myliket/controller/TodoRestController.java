@@ -33,7 +33,14 @@ public class TodoRestController {
         List<TodoVO> resultList = todoService.getTodoList();
 
         if (ObjectUtils.isEmpty(resultList)) {
-            return ResponseEntity.noContent().build();
+
+            TodoVO todoVO = TodoVO.builder().build();
+            resultList.add(todoVO);
+
+            Response response = Response.builder()
+                    .resultList(resultList)
+                    .build();
+            return ResponseEntity.ok().body(response);
         }
 
         Response response = Response.builder()
@@ -58,13 +65,19 @@ public class TodoRestController {
         TodoVO resultVO = todoService.getTodoDetail(todoNo);
 
         if (ObjectUtils.isEmpty(resultVO)) {
-//            throw new RuntimeException();
-            return ResponseEntity.noContent().build();
+            TodoVO todoVO = TodoVO.builder()
+                    .build();
+
+            Response response = Response.builder()
+                    .data(todoVO)
+                    .build();
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
 
         Response response = Response.builder()
                             .data(resultVO)
                             .build();
+
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -83,7 +96,7 @@ public class TodoRestController {
         if (result==0) {
             return ResponseEntity.status(409).build();
         }
-        return ResponseEntity.status(201).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     /**
@@ -100,7 +113,7 @@ public class TodoRestController {
 //            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(null);
             return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
         }
-        return ResponseEntity.status(201).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     /**
