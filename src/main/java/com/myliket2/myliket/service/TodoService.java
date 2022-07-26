@@ -11,7 +11,7 @@ public interface TodoService {
      * methodName : getTodoList
      * @return List<TodoVO> 할일 목록
      * */
-    List<Object> getTodoList () throws Exception;
+    List<TodoVO> getTodoList () throws Exception;
 
     /**
      * 할일 상세조회

@@ -19,7 +19,7 @@ public class TodoDAOImpl implements TodoDAO{
 
 
     @Override
-    public List<Object> getTodoList() throws Exception {
+    public List<TodoVO> getTodoList() throws Exception {
         return sqlSession.selectList(nameSpace + ".getTodoList");
     }
 

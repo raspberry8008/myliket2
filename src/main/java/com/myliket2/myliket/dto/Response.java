@@ -15,6 +15,6 @@ import java.util.List;
 public class Response {
 
     private Object data;
-    private List<Object> resultList;
+    private List<?> resultList;
 
 }
