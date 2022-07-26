@@ -59,7 +59,7 @@ public class TodoRestController {
      * @return ResponseEntity 201 Created
      */
     @PostMapping(value = "",  consumes=MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8", produces=MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8")
-    public ResponseEntity<Object> insertTodo (@RequestBody TodoVO todoVO) throws Exception {
+    public ResponseEntity insertTodo (@RequestBody TodoVO todoVO) throws Exception {
         todoService.insertTodo(todoVO);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
@@ -70,7 +70,7 @@ public class TodoRestController {
      * @return ResponseEntity 201 Created
      * */
     @PutMapping(value = "/{todoNo}", consumes=MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8", produces=MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8")
-    public ResponseEntity<Object> updateTodo(@PathVariable("todoNo") int todoNo, @RequestBody TodoVO todoVO) throws Exception {
+    public ResponseEntity updateTodo(@PathVariable("todoNo") int todoNo, @RequestBody TodoVO todoVO) throws Exception {
         todoService.updateTodo(todoVO);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
@@ -81,7 +81,7 @@ public class TodoRestController {
      * @return ResponseEntity 204 No Content
      * */
     @DeleteMapping(value = "/{todoNo}", consumes=MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8", produces=MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8")
-    public ResponseEntity<Object> deleteTodo (@PathVariable("todoNo") int todoNo) throws Exception {
+    public ResponseEntity deleteTodo (@PathVariable("todoNo") int todoNo) throws Exception {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 }
