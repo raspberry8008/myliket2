@@ -9,9 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/todos")
@@ -25,9 +23,9 @@ public class TodoRestController {
 
     /**
      * 할일 전체 목록 조회 API
-     * @return ResponseEntity<Map<String, List<TodoVO>>> 200 OK, 할일 정보 목록
+     * @return ResponseEntity<Response> 200 OK, 할일 정보 목록
      * */
-    @GetMapping(value="", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE )
+    @GetMapping(value="", consumes=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8", produces=MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8" )
     public ResponseEntity<Response> getTodoList () throws Exception {
 
         List<Object> resultList = todoService.getTodoList();
@@ -46,10 +44,10 @@ public class TodoRestController {
     /**
      * 할일 상세조회 API
      * @param todoNo 상세조회 할 할일의 고유번호
-     * @return ResponseEntity<Map<String, TodoVO>> 200 OK, 할일 상세정보
+     * @return ResponseEntity<Response> 200 OK, 할일 상세정보
      * */
 
-    @GetMapping(value ="/{todoNo}",consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value ="/{todoNo}", consumes=MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8", produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public ResponseEntity<Response> getTodoDetail (@PathVariable("todoNo") int todoNo) throws Exception {
 
         TodoVO resultVO = todoService.getTodoDetail(todoNo);
@@ -71,7 +69,7 @@ public class TodoRestController {
      * @param todoVO(Object) 등록할 할일정보
      * @return ResponseEntity<Object> 201 Created
      */
-    @PostMapping(value = "",  consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "", consumes=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8", produces=MediaType.APPLICATION_JSON_VALUE+";charset=UTF-8")
     public ResponseEntity<Object> insertTodo (@RequestBody TodoVO todoVO) throws Exception {
         int result = todoService.insertTodo(todoVO);
 
@@ -86,7 +84,7 @@ public class TodoRestController {
      * @param todoVO(Object) 수정할 할일 정보
      * @return ResponseEntity<Object> 201 Created
      * */
-    @PutMapping( value = "/{todoNo}", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE )
+    @PutMapping( value = "/{todoNo}", consumes=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8", produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
     public ResponseEntity<Object> updateTodo(@PathVariable("todoNo") int todoNo, @RequestBody TodoVO todoVO) throws Exception {
         int result =todoService.updateTodo(todoVO);
 
@@ -101,7 +99,7 @@ public class TodoRestController {
      * @param todoNo 삭제할 할일 객체의 고유번호
      * @return ResponseEntity<Object> 204 No Content
      * */
-    @DeleteMapping(value = "/{todoNo}", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE )
+    @DeleteMapping(value = "/{todoNo}", consumes=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8" )
     public ResponseEntity<Object> deleteTodo (@PathVariable("todoNo") int todoNo) throws Exception {
         int result =todoService.deleteTodo(todoNo);
 

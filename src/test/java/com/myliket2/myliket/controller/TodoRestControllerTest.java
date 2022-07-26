@@ -3,7 +3,6 @@ package com.myliket2.myliket.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myliket2.myliket.service.TodoService;
 import com.myliket2.myliket.vo.TodoVO;
-import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +37,7 @@ class TodoRestControllerTest {
     void getTodoList() throws Exception {
         mockMvc.perform(get("/todos")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -48,7 +47,7 @@ class TodoRestControllerTest {
     void getTodoDetail() throws Exception {
         mockMvc.perform(get("/todos/2")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .accept(MediaType.APPLICATION_JSON_VALUE+ ";charset=UTF-8"))
                 .andExpect(status().isOk())
                 .andDo(print());
 
@@ -66,6 +65,7 @@ class TodoRestControllerTest {
                 .build();
 
         mockMvc.perform(MockMvcRequestBuilders.post("/todos")
+                        .accept(MediaType.APPLICATION_JSON_VALUE+ ";charset=UTF-8")
                         //json 형식으로 데이터를 보낸다고 명시
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         //Object로 만든 todoVO을 json형식의 String으로 만들기 위해 objectMapper를 사용
@@ -89,6 +89,7 @@ class TodoRestControllerTest {
                 .build();
 
         mockMvc.perform(put("/todos/2")
+                        .accept(MediaType.APPLICATION_JSON_VALUE+ ";charset=UTF-8")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(todoVO)))
                 .andExpect(status().is(201))
@@ -99,6 +100,7 @@ class TodoRestControllerTest {
     @Test
     void deleteTodo() throws Exception {
         mockMvc.perform(delete("/todos/23")
+                        .accept(MediaType.APPLICATION_JSON_VALUE+ ";charset=UTF-8")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content( objectMapper.writeValueAsString("23")))
                 .andExpect(status().is(204))
