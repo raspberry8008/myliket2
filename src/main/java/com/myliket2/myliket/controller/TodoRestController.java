@@ -25,7 +25,7 @@ public class TodoRestController {
 
     /**
      * 할일 전체 목록 조회 API
-     * @return ResponseEntity<Map<String, List<TodoVO>>> 200 OK, 할일 정보 목록
+     * @return ResponseEntity<Response> 200 OK, 할일 정보 목록
      * */
     @GetMapping(value="", consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE )
     public ResponseEntity<Response> getTodoList () throws Exception {
@@ -46,7 +46,7 @@ public class TodoRestController {
     /**
      * 할일 상세조회 API
      * @param todoNo 상세조회 할 할일의 고유번호
-     * @return ResponseEntity<Map<String, TodoVO>> 200 OK, 할일 상세정보
+     * @return ResponseEntity<Response> 200 OK, 할일 상세정보
      * */
 
     @GetMapping(value ="/{todoNo}",consumes=MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
