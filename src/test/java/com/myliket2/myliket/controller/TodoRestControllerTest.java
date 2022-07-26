@@ -3,6 +3,7 @@ package com.myliket2.myliket.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myliket2.myliket.service.TodoService;
 import com.myliket2.myliket.vo.TodoVO;
+import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -88,7 +89,7 @@ class TodoRestControllerTest {
                 .build();
 
         mockMvc.perform(put("/todos/2")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType("application/json;charset=UTF-8")
                         .content(objectMapper.writeValueAsString(todoVO)))
                 .andExpect(status().is(201))
                 .andDo(print());
@@ -97,7 +98,9 @@ class TodoRestControllerTest {
     @DisplayName("할일 삭제 테스트")
     @Test
     void deleteTodo() throws Exception {
-        mockMvc.perform(delete("/todos/23"))
+        mockMvc.perform(delete("/todos/23")
+                .contentType("application/json;charset=UTF-8")
+                .content( objectMapper.writeValueAsString("23")))
                 .andExpect(status().is(204))
                 .andDo(print());
     }
