@@ -26,13 +26,13 @@ public class TodoRestController {
      * @return ResponseEntity<List<TodoVO>> 200 OK, 할일 정보 목록
      * */
     @GetMapping(value="", consumes=MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8", produces=MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8")
-    public ResponseEntity getTodoList () throws Exception {
-        List<Object> resultList = todoService.getTodoList();
+    public ResponseEntity<Map<String, List<TodoVO>>> getTodoList () throws Exception {
+        List<TodoVO> resultList = todoService.getTodoList();
 
-        Map<String, Object> outMap = new HashMap<>();
+        Map<String, List<TodoVO>> outMap = new HashMap<>();
         outMap.put("resultList", resultList );
 
-        return new ResponseEntity<>(outMap, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(outMap);
     }
 
     /**
@@ -42,14 +42,14 @@ public class TodoRestController {
      * */
 
     @GetMapping(value ="/{todoNo}",consumes=MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8", produces=MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8" )
-    public ResponseEntity getTodoDetail (@PathVariable("todoNo") int todoNo) throws Exception {
+    public ResponseEntity<Map<String, TodoVO>> getTodoDetail (@PathVariable("todoNo") int todoNo) throws Exception {
 
         TodoVO resultVO = todoService.getTodoDetail(todoNo);
 
-        Map<String, Object> outMap = new HashMap<>();
-        outMap.put("data",resultVO );
+        Map<String, TodoVO> outMap = new HashMap<>();
+        outMap.put("data", resultVO );
 
-        return new ResponseEntity<>(outMap, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(outMap);
     }
 
     /**
@@ -59,7 +59,7 @@ public class TodoRestController {
      * @return ResponseEntity 201 Created
      */
     @PostMapping(value = "",  consumes=MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8", produces=MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8")
-    public ResponseEntity insertTodo (@RequestBody TodoVO todoVO) throws Exception {
+    public ResponseEntity<Object> insertTodo (@RequestBody TodoVO todoVO) throws Exception {
         todoService.insertTodo(todoVO);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
@@ -70,7 +70,7 @@ public class TodoRestController {
      * @return ResponseEntity 201 Created
      * */
     @PutMapping(value = "/{todoNo}", consumes=MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8", produces=MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8")
-    public ResponseEntity updateTodo(@PathVariable("todoNo") int todoNo, @RequestBody TodoVO todoVO) throws Exception {
+    public ResponseEntity<Object> updateTodo(@PathVariable("todoNo") int todoNo, @RequestBody TodoVO todoVO) throws Exception {
         todoService.updateTodo(todoVO);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
@@ -81,7 +81,7 @@ public class TodoRestController {
      * @return ResponseEntity 204 No Content
      * */
     @DeleteMapping(value = "/{todoNo}", consumes=MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8", produces=MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8")
-    public ResponseEntity deleteTodo (@PathVariable("todoNo") int todoNo) throws Exception {
+    public ResponseEntity<Object> deleteTodo (@PathVariable("todoNo") int todoNo) throws Exception {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 }

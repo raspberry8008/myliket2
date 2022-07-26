@@ -17,7 +17,7 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
-    public List<Object> getTodoList() throws Exception {
+    public List<TodoVO> getTodoList() throws Exception {
         return todoDAO.getTodoList();
     }
 
