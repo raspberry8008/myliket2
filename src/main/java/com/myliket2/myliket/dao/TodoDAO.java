@@ -12,7 +12,7 @@ public interface TodoDAO {
      * methodName : getTodoList
      * @return List<TodoVO> 할일 목록
      * */
-    public List<TodoVO> getTodoList () throws Exception;
+    List<Object> getTodoList () throws Exception;
 
     /**
      * 할일 상세조회
@@ -21,7 +21,7 @@ public interface TodoDAO {
      * @param todoNo 요청한 할일의 고유번호
      * @return todoVO(Object) 할일 상세정보
      */
-    public TodoVO getTodoDetail (int todoNo) throws Exception;
+    TodoVO getTodoDetail (int todoNo) throws Exception;
 
     /**
      * 할일 등록
@@ -30,7 +30,7 @@ public interface TodoDAO {
      * @param todoVO(Object) 등록할 할일정보
      * @return int 할일 추가 처리 수
      */
-    public int insertTodo (TodoVO todoVO) throws Exception;
+    int insertTodo (TodoVO todoVO) throws Exception;
 
     /**
      * 할일 수정
@@ -38,7 +38,7 @@ public interface TodoDAO {
      * @param todoVO(Object) 수정할 할일정보
      * @return int 할일 수정 처리 수
      * */
-    public int updateTodo(TodoVO todoVO) throws Exception;
+    int updateTodo(TodoVO todoVO) throws Exception;
 
     /**
      * 할일 삭제
@@ -46,5 +46,5 @@ public interface TodoDAO {
      * @param todoNo 삭제요청한 할일의 고유번호
      * @return int 할일 삭제 데이터 처리 수
      * */
-    public int deleteTodo (int todoNo) throws Exception;
+    int deleteTodo (int todoNo) throws Exception;
 }

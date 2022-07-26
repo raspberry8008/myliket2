@@ -89,7 +89,7 @@ class TodoRestControllerTest {
                 .build();
 
         mockMvc.perform(put("/todos/2")
-                        .contentType("application/json;charset=UTF-8")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(todoVO)))
                 .andExpect(status().is(201))
                 .andDo(print());
@@ -99,7 +99,7 @@ class TodoRestControllerTest {
     @Test
     void deleteTodo() throws Exception {
         mockMvc.perform(delete("/todos/23")
-                .contentType("application/json;charset=UTF-8")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content( objectMapper.writeValueAsString("23")))
                 .andExpect(status().is(204))
                 .andDo(print());

@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public class TodoDAOImpl implements TodoDAO{
 
-    private SqlSession sqlSession;
+    private final SqlSession sqlSession;
 
     private static final String nameSpace = "com.myliket2.myliket.TodoMapper";
 
@@ -19,7 +19,7 @@ public class TodoDAOImpl implements TodoDAO{
 
 
     @Override
-    public List<TodoVO> getTodoList() throws Exception {
+    public List<Object> getTodoList() throws Exception {
         return sqlSession.selectList(nameSpace + ".getTodoList");
     }
 

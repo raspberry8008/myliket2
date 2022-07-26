@@ -1,16 +1,13 @@
 package com.myliket2.myliket.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+
 
 @Getter
 @Setter
 @ToString
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL) // null 이 아닌 것만 return에 포함된다.
 public class TodoVO {
 
     // 할일 상세정보

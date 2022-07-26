@@ -10,14 +10,14 @@ import java.util.List;
 @Service
 public class TodoServiceImpl implements TodoService{
 
-    private TodoDAO todoDAO;
+    private final TodoDAO todoDAO;
 
     public TodoServiceImpl(TodoDAO todoDAO) {
         this.todoDAO = todoDAO;
     }
 
     @Override
-    public List<TodoVO> getTodoList() throws Exception {
+    public List<Object> getTodoList() throws Exception {
         return todoDAO.getTodoList();
     }
 
