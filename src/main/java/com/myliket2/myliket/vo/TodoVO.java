@@ -20,7 +20,7 @@ public class TodoVO {
     // 할일 상세정보
 
     private int todoNo; // 할일 고유번호
-//    private String categoryId; // 카테고리 아이디
+    private String categoryId; // 카테고리 아이디
 
     @NotBlank
     @Size(min=1, max=15)
