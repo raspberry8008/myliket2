@@ -21,7 +21,8 @@ import java.util.Date;
 public class TodoVO {
 
     // 할일 상세정보
-    @DateTimeFormat(pattern = "^[0-9]+$")
+
+    @Pattern(regexp="^\\d+$")
     private int todoNo; // 할일 고유번호
 //    private String categoryId; // 카테고리 아이디
 
