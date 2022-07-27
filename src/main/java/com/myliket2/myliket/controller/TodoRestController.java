@@ -25,29 +25,15 @@ public class TodoRestController {
      * 할일 전체 목록 조회 API
      * @return ResponseEntity<Response> 200 OK, 할일 정보 목록
      * */
-//    @GetMapping(value="", consumes=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8", produces=MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8" )
-//    @GetMapping(value="",  produces=MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8" )
     @GetMapping(value="")
     public ResponseEntity<Response> getTodoList () throws Exception {
 
         List<TodoVO> resultList = todoService.getTodoList();
 
-        if (ObjectUtils.isEmpty(resultList)) {
-
-            TodoVO todoVO = TodoVO.builder().build();
-            resultList.add(todoVO);
-
-            Response response = Response.builder()
-                    .resultList(resultList)
-                    .build();
-            return ResponseEntity.ok().body(response);
-        }
-
         Response response = Response.builder()
                             .resultList(resultList)
                             .build();
 
-//        return new ResponseEntity<>(response, HttpStatus.OK);
         return  ResponseEntity.ok().body(response);
 
     }
@@ -64,20 +50,9 @@ public class TodoRestController {
 
         TodoVO resultVO = todoService.getTodoDetail(todoNo);
 
-        if (ObjectUtils.isEmpty(resultVO)) {
-            TodoVO todoVO = TodoVO.builder()
-                    .build();
-
-            Response response = Response.builder()
-                    .data(todoVO)
-                    .build();
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        }
-
         Response response = Response.builder()
                             .data(resultVO)
                             .build();
-
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
