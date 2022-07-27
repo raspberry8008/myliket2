@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 public class TodoRestController {
 
     private final TodoService todoService;
+    private TodoVO todoVO;
 
     public TodoRestController(TodoService todoService) {
         this.todoService = todoService;
@@ -65,12 +67,10 @@ public class TodoRestController {
      */
     @PostMapping(value = "")
 //    @PostMapping(value = "", consumes=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8", produces=MediaType.APPLICATION_JSON_VALUE+";charset=UTF-8")
-    public ResponseEntity<Object> insertTodo (@RequestBody TodoVO todoVO) throws Exception {
-        int result = todoService.insertTodo(todoVO);
+    public ResponseEntity<Void> insertTodo (@RequestBody @Validated TodoVO todoVO) throws Exception {
 
-        if (result==0) {
-            return ResponseEntity.status(409).build();
-        }
+        todoService.insertTodo(todoVO);
+
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -80,14 +80,10 @@ public class TodoRestController {
      * @return ResponseEntity<Object> 201 Created
      * */
 //    @PutMapping( value = "/{todoNo}", consumes=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8", produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
-    @PutMapping( value = "/{todoNo}")
-    public ResponseEntity<Object> updateTodo(@PathVariable("todoNo") int todoNo, @RequestBody TodoVO todoVO) throws Exception {
-        int result =todoService.updateTodo(todoVO);
+    @PutMapping( value = "")
+    public ResponseEntity<Object> updateTodo(@RequestBody @Validated  TodoVO todoVO) throws Exception {
+        todoService.updateTodo(todoVO);
 
-        if (result==0) {
-//            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(null);
-            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
-        }
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -99,11 +95,8 @@ public class TodoRestController {
 //    @DeleteMapping(value = "/{todoNo}", consumes=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8" )
     @DeleteMapping(value = "/{todoNo}" )
     public ResponseEntity<Object> deleteTodo (@PathVariable("todoNo") int todoNo) throws Exception {
-        int result =todoService.deleteTodo(todoNo);
+        todoService.deleteTodo(todoNo);
 
-        if (result==0) {
-            return ResponseEntity.status(409).build();
-        }
         return ResponseEntity.noContent().build();
     }
 }

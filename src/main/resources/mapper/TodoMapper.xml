@@ -11,8 +11,8 @@
             todoNo
              , todoTitle
              , todoContent
-             , todoDay
-             , todoTime
+             , DATE_FORMAT(todoDay, '%Y-%m-%d') AS todoDay
+             , DATE_FORMAT(todoTime, '%H:%i:%s') AS todoTime
              , todoState
         FROM
             tododetail
@@ -33,8 +33,8 @@
             todoNo
              , todoTitle
              , todoContent
-             , DATE_FORMAT(todoDay, '%Y%m%d') AS todoDay
-             , DATE_FORMAT(todoTime, '%H%i%s') AS todoTime
+             , DATE_FORMAT(todoDay, '%Y-%m-%d') AS todoDay
+             , DATE_FORMAT(todoTime, '%H:%i:%s') AS todoTime
              , todoState
         FROM
             tododetail
@@ -76,8 +76,8 @@
         SET
             todoTitle=#{todoTitle}
           , todoContent=#{todoContent}
-          , todoDay=  DATE_FORMAT(#{todoDay}, '%Y%m%d')
-          , todoTime=DATE_FORMAT(#{todoTime}, '%H%i%s')
+          , todoDay=  DATE_FORMAT(#{todoDay}, '%Y-%m-%d')
+          , todoTime=DATE_FORMAT(#{todoTime}, '%H:%i:%s')
           , todoUpdatedAt=now()
         WHERE
             todoNo=#{todoNo}
