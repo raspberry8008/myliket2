@@ -4,6 +4,7 @@ import com.myliket2.myliket.dao.TodoDAO;
 import com.myliket2.myliket.vo.TodoVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -18,12 +19,23 @@ public class TodoServiceImpl implements TodoService{
 
     @Override
     public List<TodoVO> getTodoList() throws Exception {
-        return todoDAO.getTodoList();
+        List<TodoVO> resultList = todoDAO.getTodoList();
+
+        if (ObjectUtils.isEmpty(resultList)) {
+            resultList.add(TodoVO.builder().build());
+            return resultList;
+        }
+        return resultList;
     }
 
     @Override
     public TodoVO getTodoDetail(int todoNo) throws Exception {
-        return todoDAO.getTodoDetail(todoNo);
+        TodoVO resultVO = todoDAO.getTodoDetail(todoNo);
+
+        if (ObjectUtils.isEmpty(resultVO)) {
+            return TodoVO.builder().build();
+        }
+        return resultVO;
     }
 
     @Transactional

@@ -48,7 +48,7 @@ class TodoRestControllerTest {
         mockMvc.perform(get("/todos/100")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().is(204))
+                .andExpect(status().is(200))
                 .andDo(print());
 
     }
@@ -60,8 +60,6 @@ class TodoRestControllerTest {
         TodoVO todoVO = TodoVO.builder()
                 .todoTitle("등록 테스트 제목")
                 .todoContent("등록 테스트 내용")
-                .todoDay("20220726")
-                .todoTime("120000")
                 .build();
 
         mockMvc.perform(MockMvcRequestBuilders.post("/todos")
@@ -84,11 +82,9 @@ class TodoRestControllerTest {
                 .todoNo(2)
                 .todoTitle("수정테스트 제목")
                 .todoContent("수정테스트 내용")
-                .todoDay("20220725")
-                .todoTime("210000")
                 .build();
 
-        mockMvc.perform(put("/todos/2")
+        mockMvc.perform(put("/todos")
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(todoVO)))
@@ -103,7 +99,7 @@ class TodoRestControllerTest {
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content( objectMapper.writeValueAsString("23")))
-                .andExpect(status().is(204))
+                .andExpect(status().is(201))
                 .andDo(print());
     }
 }

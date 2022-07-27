@@ -4,9 +4,8 @@ import com.myliket2.myliket.dto.Response;
 import com.myliket2.myliket.service.TodoService;
 import com.myliket2.myliket.vo.TodoVO;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ObjectUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +15,7 @@ import java.util.List;
 public class TodoRestController {
 
     private final TodoService todoService;
+    private TodoVO todoVO;
 
     public TodoRestController(TodoService todoService) {
         this.todoService = todoService;
@@ -25,29 +25,15 @@ public class TodoRestController {
      * 할일 전체 목록 조회 API
      * @return ResponseEntity<Response> 200 OK, 할일 정보 목록
      * */
-//    @GetMapping(value="", consumes=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8", produces=MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8" )
-//    @GetMapping(value="",  produces=MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8" )
     @GetMapping(value="")
     public ResponseEntity<Response> getTodoList () throws Exception {
 
         List<TodoVO> resultList = todoService.getTodoList();
 
-        if (ObjectUtils.isEmpty(resultList)) {
-
-            TodoVO todoVO = TodoVO.builder().build();
-            resultList.add(todoVO);
-
-            Response response = Response.builder()
-                    .resultList(resultList)
-                    .build();
-            return ResponseEntity.ok().body(response);
-        }
-
         Response response = Response.builder()
                             .resultList(resultList)
                             .build();
 
-//        return new ResponseEntity<>(response, HttpStatus.OK);
         return  ResponseEntity.ok().body(response);
 
     }
@@ -64,20 +50,9 @@ public class TodoRestController {
 
         TodoVO resultVO = todoService.getTodoDetail(todoNo);
 
-        if (ObjectUtils.isEmpty(resultVO)) {
-            TodoVO todoVO = TodoVO.builder()
-                    .build();
-
-            Response response = Response.builder()
-                    .data(todoVO)
-                    .build();
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        }
-
         Response response = Response.builder()
                             .data(resultVO)
                             .build();
-
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -90,12 +65,10 @@ public class TodoRestController {
      */
     @PostMapping(value = "")
 //    @PostMapping(value = "", consumes=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8", produces=MediaType.APPLICATION_JSON_VALUE+";charset=UTF-8")
-    public ResponseEntity<Object> insertTodo (@RequestBody TodoVO todoVO) throws Exception {
-        int result = todoService.insertTodo(todoVO);
+    public ResponseEntity<Void> insertTodo (@RequestBody @Validated TodoVO todoVO) throws Exception {
 
-        if (result==0) {
-            return ResponseEntity.status(409).build();
-        }
+        todoService.insertTodo(todoVO);
+
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -105,30 +78,23 @@ public class TodoRestController {
      * @return ResponseEntity<Object> 201 Created
      * */
 //    @PutMapping( value = "/{todoNo}", consumes=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8", produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
-    @PutMapping( value = "/{todoNo}")
-    public ResponseEntity<Object> updateTodo(@PathVariable("todoNo") int todoNo, @RequestBody TodoVO todoVO) throws Exception {
-        int result =todoService.updateTodo(todoVO);
+    @PutMapping( value = "")
+    public ResponseEntity<Object> updateTodo(@RequestBody @Validated  TodoVO todoVO) throws Exception {
+        todoService.updateTodo(todoVO);
 
-        if (result==0) {
-//            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(null);
-            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
-        }
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     /**
      * 할일 삭제 API
      * @param todoNo 삭제할 할일 객체의 고유번호
-     * @return ResponseEntity<Object> 204 No Content
+     * @return ResponseEntity<Object> 201 CREATED : 이동할 페이지 없음
      * */
 //    @DeleteMapping(value = "/{todoNo}", consumes=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8" )
     @DeleteMapping(value = "/{todoNo}" )
     public ResponseEntity<Object> deleteTodo (@PathVariable("todoNo") int todoNo) throws Exception {
-        int result =todoService.deleteTodo(todoNo);
+        todoService.deleteTodo(todoNo);
 
-        if (result==0) {
-            return ResponseEntity.status(409).build();
-        }
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
