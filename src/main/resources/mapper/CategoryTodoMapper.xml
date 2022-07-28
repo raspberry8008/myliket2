@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myliket2.myliket.CategotyTodoMapper">
+    
+    <resultMap id="CategoryTodoVO" type="CategoryTodoVO">
+        <result column="categoryId" property="categoryId" jdbcType="VARCHAR" javaType="String"/>
+        <result column="categoryName" property="categoryName" jdbcType="VARCHAR" javaType="String"/>
+        <result column="todoNo" property="todoNo" />
+        <result column="todoTitle" property="todoTitle" jdbcType="VARCHAR" javaType="String"/>
+        <result column="todoContent" property="todoContent" jdbcType="VARCHAR" javaType="String" />
+        <result column="todoDay" property="todoDay" />
+        <result column="todoTime" property="todoTime" />
+        <result column="todoState" property="todoState" />
+
+    </resultMap>
+
+    <!-- getCategoryTodoList: 할일 목록 전체조회 -->
+    <select id="getCategoryTodoList" parameterType="java.lang.String" resultType="CategoryTodoVO">
+        /*getCategoryTodoList*/
+        <if test="categoryId==categoryId.toString()">
+        SELECT
+            HEX(tododetail.categoryId) AS categoryId
+            , categoryName
+            , todoNo
+            , todoTitle
+            , todoContent
+            , DATE_FORMAT(todoDay, '%Y-%m-%d') AS todoDay
+            , DATE_FORMAT(todoTime, '%H:%i:%s') AS todoTime
+            , todoState
+        FROM
+            category
+            , tododetail
+        WHERE
+            category.categoryId = tododetail.categoryId
+        AND
+            HEX(tododetail.categoryId) = #{categoryId,jdbcType=VARCHAR }
+        GROUP BY
+            todoNo
+        ORDER BY
+            todoDay ASC
+               , todoTime IS NULL ASC
+               , todoTime ASC
+        </if>
+    </select>
+
+    <!-- getTodoDetail : 할일 상세조회 -->
+    <select id="getTodoDetail" parameterType="java.lang.Integer"  resultType="CategoryTodoVO">
+        /*getTodoDetail*/
+        SELECT
+            categoryName
+            , todoNo
+            , todoTitle
+            , todoContent
+            , DATE_FORMAT(todoDay, '%Y-%m-%d') AS todoDay
+            , DATE_FORMAT(todoTime, '%H:%i:%s') AS todoTime
+            , todoState
+        FROM
+            category
+            , tododetail
+        WHERE
+            category.categoryId = tododetail.categoryId
+        AND
+            todoNo = #{todoNo}
+    </select>
+
+
+</mapper>

@@ -1,34 +1,39 @@
 package com.myliket2.myliket.controller;
 
 import com.myliket2.myliket.dto.Response;
-import com.myliket2.myliket.service.TodoService;
-import com.myliket2.myliket.vo.TodoVO;
+import com.myliket2.myliket.service.CategoryTodoService;
+import com.myliket2.myliket.vo.CategoryTodoVO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value="/todos")
+@RequestMapping(value="/categorys")
 public class CategoryTodoRestController {
 
-    private final TodoService todoService;
-    private TodoVO todoVO;
+    private final CategoryTodoService categoryTodoService;
 
-    public CategoryTodoRestController(TodoService todoService) {
-        this.todoService = todoService;
+    public CategoryTodoRestController(CategoryTodoService categoryTodoService) {
+        this.categoryTodoService = categoryTodoService;
     }
 
     /**
-     * 할일 전체 목록 조회 API
+     * 단일 카테고리의 할일 전체 목록 조회 API
      * @return ResponseEntity<Response> 200 OK, 할일 정보 목록
      * */
-    @GetMapping(value="")
-    public ResponseEntity<Response> getTodoList () throws Exception {
+    @GetMapping(value="/{categoryId}/todos")
+    public ResponseEntity<Response> getCategoryTodoList (@PathVariable("categoryId") String categoryId) throws Exception {
 
-        List<TodoVO> resultList = todoService.getTodoList();
+//        Map<String, CategoryVO> map = new HashMap<>();
+//        map.put("categoryId", CategoryVO.builder().categoryId(categoryId).build());
+        String categoryId2=categoryId;
+
+        List<CategoryTodoVO> resultList = categoryTodoService.getCategoryTodoList(categoryId2);
 
         Response response = Response.builder()
                             .resultList(resultList)
@@ -44,57 +49,15 @@ public class CategoryTodoRestController {
      * @return ResponseEntity<Response> 200 OK, 할일 상세정보
      * */
 
-    @GetMapping(value ="/{todoNo}")
-//    @GetMapping(value ="/{todoNo}", consumes=MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8", produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
+    @GetMapping(value ="/{categoryId}/todos/{todoNo}")
     public ResponseEntity<Response> getTodoDetail (@PathVariable("todoNo") int todoNo) throws Exception {
 
-        TodoVO resultVO = todoService.getTodoDetail(todoNo);
+        CategoryTodoVO resultVO = categoryTodoService.getTodoDetail(todoNo);
 
         Response response = Response.builder()
                             .data(resultVO)
                             .build();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    /**
-     * 할일 등록 API
-     *
-     * @param todoVO(Object) 등록할 할일정보
-     * @return ResponseEntity<Object> 201 Created
-     */
-    @PostMapping(value = "")
-//    @PostMapping(value = "", consumes=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8", produces=MediaType.APPLICATION_JSON_VALUE+";charset=UTF-8")
-    public ResponseEntity<Void> insertTodo (@RequestBody @Validated TodoVO todoVO) throws Exception {
-
-        todoService.insertTodo(todoVO);
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    /**
-     * 할일 수정 API
-     * @param todoVO(Object) 수정할 할일 정보
-     * @return ResponseEntity<Object> 201 Created
-     * */
-//    @PutMapping( value = "/{todoNo}", consumes=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8", produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
-    @PutMapping( value = "")
-    public ResponseEntity<Object> updateTodo(@RequestBody @Validated  TodoVO todoVO) throws Exception {
-        todoService.updateTodo(todoVO);
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    /**
-     * 할일 삭제 API
-     * @param todoNo 삭제할 할일 객체의 고유번호
-     * @return ResponseEntity<Object> 201 CREATED : 이동할 페이지 없음
-     * */
-//    @DeleteMapping(value = "/{todoNo}", consumes=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8" )
-    @DeleteMapping(value = "/{todoNo}" )
-    public ResponseEntity<Object> deleteTodo (@PathVariable("todoNo") int todoNo) throws Exception {
-        todoService.deleteTodo(todoNo);
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

@@ -8,23 +8,15 @@
     <select id="getTodoList"  resultType="TodoVO">
         /*getTodoList*/
         SELECT
-            HEX(tododetail.categoryId) AS categoryId
-            , categoryName
-            , todoNo
+            todoNo
+            , HEX(categoryId) AS categoryId
             , todoTitle
             , todoContent
             , DATE_FORMAT(todoDay, '%Y-%m-%d') AS todoDay
             , DATE_FORMAT(todoTime, '%H:%i:%s') AS todoTime
             , todoState
         FROM
-            category
-            , tododetail
-        WHERE
-            category.categoryId = tododetail.categoryId
-        AND
-            HEX(tododetail.categoryId) = #{categoryId}
-        GROUP BY
-            todoNo
+            tododetail
         ORDER BY
             todoDay ASC
                , todoTime IS NULL ASC
