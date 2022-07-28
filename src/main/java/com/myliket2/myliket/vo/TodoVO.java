@@ -1,12 +1,16 @@
 package com.myliket2.myliket.vo;
 
+import com.myliket2.myliket.common.annotation.TodoTimeCheck;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -36,7 +40,7 @@ public class TodoVO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate todoDay; // 할일 일정일자
 
-//    @FutureOrPresent
+    @TodoTimeCheck
     @DateTimeFormat(pattern = "HH:mm:ss")
 //    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", timezone = "Asia/Seoul")
     private LocalTime todoTime; // 할일 일정시간

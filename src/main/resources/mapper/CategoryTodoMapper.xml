@@ -4,7 +4,7 @@
 <mapper namespace="com.myliket2.myliket.CategotyTodoMapper">
     
     <resultMap id="CategoryTodoVO" type="CategoryTodoVO">
-        <result column="categoryId" property="categoryId" jdbcType="VARCHAR" javaType="String"/>
+        <result column="categoryId" property="categoryId" jdbcType="BINARY" javaType="byte[]"/>
         <result column="categoryName" property="categoryName" jdbcType="VARCHAR" javaType="String"/>
         <result column="todoNo" property="todoNo" />
         <result column="todoTitle" property="todoTitle" jdbcType="VARCHAR" javaType="String"/>
