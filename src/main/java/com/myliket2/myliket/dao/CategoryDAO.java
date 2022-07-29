@@ -1,10 +1,12 @@
 package com.myliket2.myliket.dao;
 
+import com.myliket2.myliket.dto.CategoryDTO;
 import com.myliket2.myliket.vo.CategoryVO;
 
 import java.util.List;
 
-
+//@Mapper
+//@Repository
 public interface CategoryDAO {
 
     /**
@@ -27,18 +29,18 @@ public interface CategoryDAO {
      * 카테고리 등록
      * methodName : insertCategory
      *
-     * @param categoryVO(Object) 등록할 카테고리 정보
+     * @param categoryDTO(Object) 등록할 카테고리 정보
      * @return int 카테고리 등록 처리 수
      */
-    int insertCategory (CategoryVO categoryVO) throws Exception;
+    int insertCategory (CategoryDTO categoryDTO) throws Exception;
 
     /**
      * 카테고리 수정
      * methodName : updateCategory
-     * @param categoryVO(Object) 수정할 카테고리 정보
+     * @param categoryDTO(Object) 수정할 카테고리 정보
      * @return int 카테고리 수정 처리 수
      * */
-    int updateCategory(CategoryVO categoryVO) throws Exception;
+    int updateCategory(CategoryDTO categoryDTO) throws Exception;
 
     /**
      * 카테고리 삭제

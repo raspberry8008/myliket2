@@ -1,6 +1,5 @@
-package com.myliket2.myliket.vo;
+package com.myliket2.myliket.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +10,7 @@ import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 
@@ -19,14 +18,12 @@ import java.time.LocalTime;
 @Setter
 @ToString
 @Builder
-public class CategoryTodoVO {
+public class TodoDTO {
 
     // 할일 상세정보
 
     private int todoNo; // 할일 고유번호
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private String categoryId; // 카테고리 아이디
-    private String categoryName; // 카테고리 이름
 
     @NotBlank
     @Size(min=1, max=15)
@@ -39,10 +36,9 @@ public class CategoryTodoVO {
     @NotNull
     @FutureOrPresent
 //    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd" , timezone = "Asia/Seoul")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate todoDay; // 할일 일정일자
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime todoDay; // 할일 일정일자
 
-//    @FutureOrPresent
     @DateTimeFormat(pattern = "HH:mm:ss")
 //    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", timezone = "Asia/Seoul")
     private LocalTime todoTime; // 할일 일정시간

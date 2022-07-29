@@ -4,48 +4,93 @@
 
 <mapper namespace="com.myliket2.myliket.TodoMapper">
 
-    <!-- getTodoList: 할일 목록 전체조회 -->
-    <select id="getTodoList"  resultType="TodoVO">
-        /*getTodoList*/
+    <!-- allCategoryTodoList: 전체 카테고리의 할일을 조회 한다.-->
+    <select id="allCategoryTodoList" resultType="TodoVO">
+        /*allCategoryTodoList*/
         SELECT
-            todoNo
-            , HEX(categoryId) AS categoryId
-            , todoTitle
-            , todoContent
-            , DATE_FORMAT(todoDay, '%Y-%m-%d') AS todoDay
-            , DATE_FORMAT(todoTime, '%H:%i:%s') AS todoTime
-            , todoState
+            categoryName
+             , todoNo
+             , todoTitle
+             , todoContent
+             , DATE_FORMAT(todoDay, '%Y-%m-%d') AS todoDay
+             , DATE_FORMAT(todoTime, '%H:%i:%s') AS todoTime
+             , stateKor
         FROM
-            tododetail
+            category AS c
+           , tododetail AS t
+           , grbstate AS g
+        WHERE
+            c.categoryId = t.categoryId
+          AND
+            t.todoState = g.stateCode
+        GROUP BY
+            todoNo
         ORDER BY
             todoDay ASC
                , todoTime IS NULL ASC
                , todoTime ASC
     </select>
 
-    <!-- getTodoDetail : 할일 상세조회 -->
-    <select id="getTodoDetail" parameterType="java.lang.Integer" resultType="TodoVO">
-        /*getTodoDetail*/
+    <!-- getCategoryTodoList: 카테고리 {categoryId} 에 대한 전체 할일을 조회-->
+    <select id="getCategoryTodoList" parameterType="java.lang.String" resultType="TodoVO">
+        /*getCategoryTodoList*/
         SELECT
-            todoNo
+            categoryName
+             , todoNo
              , todoTitle
              , todoContent
              , DATE_FORMAT(todoDay, '%Y-%m-%d') AS todoDay
              , DATE_FORMAT(todoTime, '%H:%i:%s') AS todoTime
-             , todoState
+             , stateKor
         FROM
-            tododetail
+            category AS c
+           , tododetail AS t
+           , grbstate AS g
         WHERE
+            c.categoryId = t.categoryId
+          AND
+            t.todoState = g.stateCode
+          AND
+            HEX(t.categoryId) = #{categoryId}
+        GROUP BY
+            todoNo
+        ORDER BY
+            todoDay ASC
+               , todoTime IS NULL ASC
+               , todoTime ASC
+    </select>
+
+    <!-- getTodoDetail : 할일 {todoNo}에 대한 세부정보를 조회 -->
+    <select id="getTodoDetail" parameterType="java.lang.Long"  resultType="TodoVO">
+        /*getTodoDetail*/
+        SELECT
+            categoryName
+             , todoNo
+             , todoTitle
+             , todoContent
+             , DATE_FORMAT(todoDay, '%Y-%m-%d') AS todoDay
+             , DATE_FORMAT(todoTime, '%H:%i:%s') AS todoTime
+             , stateKor
+        FROM
+            category AS c
+           , tododetail AS t
+           , grbstate AS g
+        WHERE
+            c.categoryId = t.categoryId
+          AND
+            t.todoState = g.stateCode
+          AND
             todoNo = #{todoNo}
     </select>
 
     <!-- insertTodo : 할일 등록하기 -->
-    <insert id="insertTodo" parameterType="TodoVO" useGeneratedKeys="true" keyProperty="todoNo" >
+    <insert id="insertTodo" parameterType="TodoDTO" useGeneratedKeys="true" keyProperty="todoNo" >
         /*insertTodo*/
         INSERT INTO
 			tododetail
             (
-                todoTitle
+                categoryId
+                , todoTitle
                 , todoContent
                 , todoDay
                 , todoTime
@@ -55,6 +100,7 @@
 
 		VALUES
 			(
+			    UXHEX(#{categoryId})
 		        #{todoTitle}
               , #{todoContent}
               , #{todoDay}
@@ -66,12 +112,13 @@
     </insert>
 
     <!-- updateTodo : 할일 수정하기 -->
-    <update id="updateTodo" parameterType="TodoVO">
+    <update id="updateTodo" parameterType="TodoDTO">
         /*updateTodo*/
         UPDATE
             tododetail
         SET
-            todoTitle=#{todoTitle}
+            categoryId=UNHEX(#{categoryId})
+          , todoTitle=#{todoTitle}
           , todoContent=#{todoContent}
           , todoDay=  DATE_FORMAT(#{todoDay}, '%Y-%m-%d')
           , todoTime=DATE_FORMAT(#{todoTime}, '%H:%i:%s')
@@ -81,7 +128,7 @@
     </update>
 
     <!--deleteTodo : 할일 삭제 -->
-    <delete id="deleteTodo" parameterType="java.lang.Integer" >
+    <delete id="deleteTodo" parameterType="java.lang.Long" >
         /*deleteTodo*/
         DELETE
         FROM

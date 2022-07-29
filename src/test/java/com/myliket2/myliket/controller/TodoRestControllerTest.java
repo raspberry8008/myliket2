@@ -31,27 +31,33 @@ class TodoRestControllerTest {
     @Autowired
     TodoService todoService;
 
-
-    @DisplayName("할일 전체목록 조회 테스트")
+    @DisplayName("단일 카테고리의 할일 목록 조회")
     @Test
-    void getTodoList() throws Exception {
-        mockMvc.perform(get("/todos")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE ))
+    void allCategoryTodoList() throws Exception {
+        mockMvc.perform(get("/categorys/57E28D94037340779DAF421C2C493789/todos")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
 
-    @DisplayName("할일 상세조회 테스트")
+    @DisplayName("단일 카테고리의 할일 목록 조회")
+    @Test
+    void getCategoryTodoList() throws Exception {
+        mockMvc.perform(get("/categorys/57E28D94037340779DAF421C2C493789/todos")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @DisplayName("할일 단일 조회")
     @Test
     void getTodoDetail() throws Exception {
-        mockMvc.perform(get("/todos/100")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().is(200))
+        mockMvc.perform(get("/categorys/57E28D94037340779DAF421C2C493789/todos/1")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
                 .andDo(print());
-
     }
+
 
     @DisplayName("할일 등록 테스트")
     @Test
@@ -79,7 +85,7 @@ class TodoRestControllerTest {
     void updateTodo() throws Exception {
 
         TodoVO todoVO = TodoVO.builder()
-                .todoNo(2)
+                .todoNo(2L)
                 .todoTitle("수정테스트 제목")
                 .todoContent("수정테스트 내용")
                 .build();

@@ -1,10 +1,9 @@
 package com.myliket2.myliket.controller;
 
+import com.myliket2.myliket.dto.CategoryDTO;
 import com.myliket2.myliket.dto.Response;
 import com.myliket2.myliket.service.CategoryService;
-import com.myliket2.myliket.service.TodoService;
 import com.myliket2.myliket.vo.CategoryVO;
-import com.myliket2.myliket.vo.TodoVO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -60,25 +59,25 @@ public class CategoryRestController {
     /**
      * 카테고리 등록 API
      *
-     * @param categoryVO(Object) 등록할 할일정보
+     * @param categoryDTO(Object) 등록할 할일정보
      * @return ResponseEntity<Object> 201 Created
      */
     @PostMapping(value = "")
-    public ResponseEntity<Void> insertTodo (@RequestBody @Validated CategoryVO categoryVO) throws Exception {
+    public ResponseEntity<Void> insertTodo (@RequestBody @Validated CategoryDTO categoryDTO) throws Exception {
 
-        categoryService.insertCategory(categoryVO);
+        categoryService.insertCategory(categoryDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     /**
      * 카테고리 수정 API
-     * @param categoryVO(Object) 수정할 카테고리 정보
+     * @param categoryDTO(Object) 수정할 카테고리 정보
      * @return ResponseEntity<Object> 201 Created
      * */
     @PutMapping( value = "")
-    public ResponseEntity<Object> updateTodo(@RequestBody @Validated CategoryVO categoryVO) throws Exception {
-        categoryService.updateCategory(categoryVO);
+    public ResponseEntity<Object> updateTodo(@RequestBody @Validated CategoryDTO categoryDTO) throws Exception {
+        categoryService.updateCategory(categoryDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

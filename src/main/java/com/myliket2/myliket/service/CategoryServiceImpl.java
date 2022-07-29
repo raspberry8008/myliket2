@@ -1,6 +1,7 @@
 package com.myliket2.myliket.service;
 
 import com.myliket2.myliket.dao.CategoryDAO;
+import com.myliket2.myliket.dto.CategoryDTO;
 import com.myliket2.myliket.vo.CategoryVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,20 +42,20 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Transactional
     @Override
-    public int insertCategory(CategoryVO categoryVO) throws Exception {
+    public int insertCategory(CategoryDTO categoryDTO) throws Exception {
 
         // uuid 생성
         String isCategoryId = UUID.randomUUID().toString().replace("-","");
-        categoryVO.setCategoryId(isCategoryId);
+        categoryDTO.setCategoryId(isCategoryId);
 
 
-        return categoryDAO.insertCategory(categoryVO);
+        return categoryDAO.insertCategory(categoryDTO);
     }
 
     @Transactional
     @Override
-    public int updateCategory(CategoryVO categoryVO) throws Exception {
-        return categoryDAO.updateCategory(categoryVO);
+    public int updateCategory(CategoryDTO categoryDTO) throws Exception {
+        return categoryDAO.updateCategory(categoryDTO);
     }
 
     @Transactional

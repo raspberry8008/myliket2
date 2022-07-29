@@ -16,6 +16,8 @@ public class TodoTimeValidator implements ConstraintValidator<TodoTimeCheck, Loc
         if (Objects.equals(null, time)) {
             return true;
         }
+
+
         // 사용자 입력 시간
         LocalTime inputTime = LocalTime.parse(time.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
         // 현재 시간

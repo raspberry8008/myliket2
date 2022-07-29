@@ -1,6 +1,7 @@
 package com.myliket2.myliket.service;
 
 import com.myliket2.myliket.dao.TodoDAO;
+import com.myliket2.myliket.dto.TodoDTO;
 import com.myliket2.myliket.vo.TodoVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +19,8 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
-    public List<TodoVO> getTodoList() throws Exception {
-        List<TodoVO> resultList = todoDAO.getTodoList();
+    public List<TodoVO> allCategoryTodoList() throws Exception {
+        List<TodoVO> resultList = todoDAO.allCategoryTodoList();
 
         if (ObjectUtils.isEmpty(resultList)) {
             resultList.add(TodoVO.builder().build());
@@ -29,7 +30,18 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
-    public TodoVO getTodoDetail(int todoNo) throws Exception {
+    public List<TodoVO> getCategoryTodoList (String categoryId) throws Exception {
+        List<TodoVO> resultList = todoDAO.getCategoryTodoList(categoryId);
+
+        if (ObjectUtils.isEmpty(resultList)) {
+            resultList.add(TodoVO.builder().build());
+            return resultList;
+        }
+        return resultList;
+    }
+
+    @Override
+    public TodoVO getTodoDetail(Long todoNo) throws Exception {
         TodoVO resultVO = todoDAO.getTodoDetail(todoNo);
 
         if (ObjectUtils.isEmpty(resultVO)) {
@@ -40,19 +52,19 @@ public class TodoServiceImpl implements TodoService{
 
     @Transactional
     @Override
-    public int insertTodo(TodoVO todoVO) throws Exception {
-        return todoDAO.insertTodo(todoVO);
+    public int insertTodo(TodoDTO todoDTO) throws Exception {
+        return todoDAO.insertTodo(todoDTO);
     }
 
     @Transactional
     @Override
-    public int updateTodo(TodoVO todoVO) throws Exception {
-        return todoDAO.updateTodo(todoVO);
+    public int updateTodo(TodoDTO todoDTO) throws Exception {
+        return todoDAO.updateTodo(todoDTO);
     }
 
     @Transactional
     @Override
-    public int deleteTodo(int todoNo) throws Exception {
+    public int deleteTodo(Long todoNo) throws Exception {
         return todoDAO.deleteTodo(todoNo);
     }
 

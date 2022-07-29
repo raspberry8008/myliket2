@@ -1,6 +1,7 @@
 package com.myliket2.myliket.controller;
 
 import com.myliket2.myliket.dto.Response;
+import com.myliket2.myliket.dto.TodoDTO;
 import com.myliket2.myliket.service.TodoService;
 import com.myliket2.myliket.vo.TodoVO;
 import org.springframework.http.HttpStatus;
@@ -22,17 +23,34 @@ public class TodoRestController {
     }
 
     /**
-     * 할일 전체 목록 조회 API
+     * 전체 카테고리의 할일을 조회 API
      * @return ResponseEntity<Response> 200 OK, 할일 정보 목록
      * */
     @GetMapping(value="")
-    public ResponseEntity<Response> getTodoList () throws Exception {
+    public ResponseEntity<Response> allCategoryTodoList () throws Exception {
 
-        List<TodoVO> resultList = todoService.getTodoList();
+        List<TodoVO> resultList = todoService.allCategoryTodoList();
 
         Response response = Response.builder()
                             .resultList(resultList)
                             .build();
+
+        return  ResponseEntity.ok().body(response);
+
+    }
+
+    /**
+     * 카테고리 {categoryId} 에 대한 전체 할일 조회 API
+     * @return ResponseEntity<Response> 200 OK, 할일 정보 목록
+     * */
+    @GetMapping(value="?")
+    public ResponseEntity<Response> getCategoryTodoList (@RequestParam("categoryId") String categoryId) throws Exception {
+
+        List<TodoVO> resultList = todoService.getCategoryTodoList(categoryId);
+
+        Response response = Response.builder()
+                .resultList(resultList)
+                .build();
 
         return  ResponseEntity.ok().body(response);
 
@@ -45,8 +63,7 @@ public class TodoRestController {
      * */
 
     @GetMapping(value ="/{todoNo}")
-//    @GetMapping(value ="/{todoNo}", consumes=MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8", produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
-    public ResponseEntity<Response> getTodoDetail (@PathVariable("todoNo") int todoNo) throws Exception {
+    public ResponseEntity<Response> getTodoDetail (@PathVariable("todoNo") Long todoNo) throws Exception {
 
         TodoVO resultVO = todoService.getTodoDetail(todoNo);
 
@@ -60,27 +77,27 @@ public class TodoRestController {
     /**
      * 할일 등록 API
      *
-     * @param todoVO(Object) 등록할 할일정보
+     * @param todoDTO(Object) 등록할 할일정보
      * @return ResponseEntity<Object> 201 Created
      */
     @PostMapping(value = "")
 //    @PostMapping(value = "", consumes=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8", produces=MediaType.APPLICATION_JSON_VALUE+";charset=UTF-8")
-    public ResponseEntity<Void> insertTodo (@RequestBody @Validated TodoVO todoVO) throws Exception {
+    public ResponseEntity<Void> insertTodo (@RequestBody @Validated TodoDTO todoDTO) throws Exception {
 
-        todoService.insertTodo(todoVO);
+        todoService.insertTodo(todoDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     /**
      * 할일 수정 API
-     * @param todoVO(Object) 수정할 할일 정보
+     * @param todoDTO(Object) 수정할 할일 정보
      * @return ResponseEntity<Object> 201 Created
      * */
 //    @PutMapping( value = "/{todoNo}", consumes=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8", produces=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8")
-    @PutMapping( value = "")
-    public ResponseEntity<Object> updateTodo(@RequestBody @Validated  TodoVO todoVO) throws Exception {
-        todoService.updateTodo(todoVO);
+    @PutMapping( value = "/todos/{todoNo}")
+    public ResponseEntity<Object> updateTodo(@RequestBody @Validated  TodoDTO todoDTO) throws Exception {
+        todoService.updateTodo(todoDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -90,9 +107,8 @@ public class TodoRestController {
      * @param todoNo 삭제할 할일 객체의 고유번호
      * @return ResponseEntity<Object> 201 CREATED : 이동할 페이지 없음
      * */
-//    @DeleteMapping(value = "/{todoNo}", consumes=MediaType.APPLICATION_JSON_VALUE +";charset=UTF-8" )
     @DeleteMapping(value = "/{todoNo}" )
-    public ResponseEntity<Object> deleteTodo (@PathVariable("todoNo") int todoNo) throws Exception {
+    public ResponseEntity<Object> deleteTodo (@PathVariable("todoNo") Long todoNo) throws Exception {
         todoService.deleteTodo(todoNo);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
