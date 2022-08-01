@@ -10,9 +10,9 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Constraint(validatedBy={TodoTimeValidator.class})
-public @interface TodoTimeCheck {
+public @interface TodoDateTimeCheck {
 
-    String message() default "과거 시간으로 설정할 수 없습니다.";
+    String message() default "일졍을 과거로 설정할 수 없습니다.";
 
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

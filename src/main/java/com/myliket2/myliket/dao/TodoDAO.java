@@ -2,21 +2,19 @@ package com.myliket2.myliket.dao;
 
 import com.myliket2.myliket.dto.TodoDTO;
 import com.myliket2.myliket.vo.TodoVO;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Mapper
-@Repository
+//@Mapper
+//@Repository
 public interface TodoDAO {
 
     /**
      * 전체 카테고리의 할일을 조회 한다.
-     * methodName : allCategoryTodoList
+     * methodName : allTodoList
      * @return List<TodoVO> 할일 목록
      * */
-    List<TodoVO> allCategoryTodoList () throws Exception;
+    List<TodoVO> allTodoList () throws Exception;
 
     /**
      * 카테고리 {categoryId} 에 대한 전체 할일을 조회

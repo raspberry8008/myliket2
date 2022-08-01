@@ -1,6 +1,7 @@
 package com.myliket2.myliket.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.myliket2.myliket.dto.CategoryDTO;
 import com.myliket2.myliket.service.CategoryService;
 import com.myliket2.myliket.vo.CategoryVO;
 import org.junit.jupiter.api.DisplayName;
@@ -73,7 +74,7 @@ class CategoryRestControllerTest {
     @DisplayName("카테고리 수정 테스트")
     @Test
     void updateTodo() throws Exception {
-        CategoryVO categoryVO = CategoryVO.builder()
+        CategoryDTO categoryDTO = CategoryDTO.builder()
                 .categoryId("57E28D94037340779DAF421C2C493789")
                 .categoryName("수정테스트")
                 .categoryState("CY")
@@ -82,7 +83,7 @@ class CategoryRestControllerTest {
         mockMvc.perform(put("/categorys")
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(categoryVO)))
+                        .content(objectMapper.writeValueAsString(categoryDTO)))
                 .andExpect(status().isCreated())
                 .andDo(print());
     }

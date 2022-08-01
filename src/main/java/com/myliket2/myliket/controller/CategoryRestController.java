@@ -6,6 +6,7 @@ import com.myliket2.myliket.service.CategoryService;
 import com.myliket2.myliket.vo.CategoryVO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,10 +30,9 @@ public class CategoryRestController {
     public ResponseEntity<Response> getCategoryList () throws Exception {
 
         List<CategoryVO> resultList = categoryService.getCategoryList();
-
         Response response = Response.builder()
-                            .resultList(resultList)
-                            .build();
+        .resultList(resultList).build();
+
 
         return  ResponseEntity.ok().body(response);
 
@@ -49,9 +49,16 @@ public class CategoryRestController {
 
         CategoryVO resultVO = categoryService.getCategoryDetail(categoryId);
 
+        if (ObjectUtils.isEmpty(resultVO)) {
+            Response response = Response.builder()
+                    .data("")
+                    .build();
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
         Response response = Response.builder()
                             .data(resultVO)
                             .build();
+
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

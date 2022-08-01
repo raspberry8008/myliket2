@@ -12,7 +12,7 @@ public interface TodoService {
      * methodName : allCategoryTodoList
      * @return List<TodoVO> 할일 목록
      * */
-    List<TodoVO> allCategoryTodoList () throws Exception;
+    List<TodoVO> allTodoList () throws Exception;
 
     /**
      * 카테고리 {categoryId} 에 대한 전체 할일을 조회

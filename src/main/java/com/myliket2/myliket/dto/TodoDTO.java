@@ -1,28 +1,43 @@
 package com.myliket2.myliket.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.myliket2.myliket.common.annotation.TodoDateTimeCheck;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
+/*
+ *  TodoDTO 사용자에게 입력받은 할일 상세 정보
+ *
+ *  Long todoNo : 할일 고유번호 (필수값 :TRUE)
+ *  String categoryId : 카테고리 아이디 (필수값 :TRUE)
+ *  String todoTitle : 할일 제목 (필수값 :TRUE)
+ *  String todoContent : 할일 내용 (필수값 :TRUE)
+ *  LocalDate todoDay : 할일 일정일자 (필수값 :TRUE)
+ *  LocalTime todoTime : 할일 일정시간 (필수값 : FALSE)
+ *  LocalDateTime checkDateTime : 할일 일정 및 시간 (todoDay + todoTime)
+ *  String todoState : 할일 상태코드
+ */
 
 @Getter
 @Setter
 @ToString
-@Builder
 public class TodoDTO {
 
-    // 할일 상세정보
-
-    private int todoNo; // 할일 고유번호
+    @NotNull
+    @JsonFormat (pattern = "^[0-9]+$")
+    private Long todoNo; // 할일 고유번호
+    @NotBlank
     private String categoryId; // 카테고리 아이디
 
     @NotBlank
@@ -33,20 +48,42 @@ public class TodoDTO {
     @Size(min=1, max=100)
     private String todoContent; // 할일 내용
 
-    @NotNull
-    @FutureOrPresent
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd" , timezone = "Asia/Seoul")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime todoDay; // 할일 일정일자
+    @NotNull(message = "일정을 입력해주세요.")
+    private LocalDate todoDay; // 할일 일정일자
 
-    @DateTimeFormat(pattern = "HH:mm:ss")
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", timezone = "Asia/Seoul")
     private LocalTime todoTime; // 할일 일정시간
 
-    @DateTimeFormat(pattern = "^[A-Z]+$")
-    private String todoState; // 할일 일정상태
-//    private String todoEndDate;// 할일 완료일
-//    private String todoCreatedAt; // 할일 최초 등록일시
-//    private String todoUpdatedAt; // 할일 마지막 수정일
+    @TodoDateTimeCheck
+    private LocalDateTime checkDateTime; // 할일 일정 및 시간
+
+    @JsonFormat (pattern = "^[A-Z]+$")
+    @Size(min=2, max=2)
+    private String todoState; // 할일 상태 코드
+
+    @Builder
+    public TodoDTO(Long todoNo, String categoryId, String todoTitle, String todoContent, LocalDate todoDay, LocalTime todoTime, String todoState) {
+        this.todoNo = (Long)todoNo;
+        this.categoryId = categoryId;
+        this.todoTitle = todoTitle;
+        this.todoContent = todoContent;
+        this.todoDay = todoDay;
+        this.todoTime = todoTime;
+        this.todoState = todoState;
+        this.checkDateTime = checkDateTime( todoDay,todoTime );
+    }
+
+
+    /*
+        checkDateTime : 사용자에게 입력받은 할일 일정 및 시간 과거 인지 확인
+        @param : todoDay(할일일정 일자), todoTime (할일 일정시간)
+     */
+    private LocalDateTime checkDateTime(LocalDate todoDay, LocalTime todoTime) {
+
+        if (Objects.equals(null, todoTime)) {
+            return LocalDateTime.parse(LocalDateTime.of(this.todoDay, LocalTime.now().plusHours(1)).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));
+        }
+        return LocalDateTime.parse(LocalDateTime.of(this.todoDay, this.todoTime).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));
+    }
+
 
 }

@@ -5,8 +5,8 @@
 <mapper namespace="com.myliket2.myliket.TodoMapper">
 
     <!-- allCategoryTodoList: 전체 카테고리의 할일을 조회 한다.-->
-    <select id="allCategoryTodoList" resultType="TodoVO">
-        /*allCategoryTodoList*/
+    <select id="allTodoList" resultType="TodoVO">
+        /*allTodoList*/
         SELECT
             categoryName
              , todoNo
@@ -100,8 +100,8 @@
 
 		VALUES
 			(
-			    UXHEX(#{categoryId})
-		        #{todoTitle}
+                UNHEX(#{categoryId})
+		      , #{todoTitle}
               , #{todoContent}
               , #{todoDay}
               , #{todoTime}
