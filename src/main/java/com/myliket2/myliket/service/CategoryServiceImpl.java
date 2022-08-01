@@ -2,9 +2,11 @@ package com.myliket2.myliket.service;
 
 import com.myliket2.myliket.dao.CategoryDAO;
 import com.myliket2.myliket.dto.CategoryDTO;
+import com.myliket2.myliket.dto.Response;
 import com.myliket2.myliket.vo.CategoryVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,22 +21,19 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public List<CategoryVO> getCategoryList() throws Exception {
+    public Response getCategoryList() throws Exception {
         List<CategoryVO> resultList = categoryDAO.getCategoryList();
-
-//        if (ObjectUtils.isEmpty(resultList)) {
-//            resultList.isEmpty();
-//
-//            return resultList;
-//        }
-        return resultList;
+        return Response.builder().resultList(resultList).build();
     }
 
     @Override
-    public CategoryVO getCategoryDetail(String CategoryId) throws Exception {
+    public Response getCategoryDetail(String CategoryId) throws Exception {
         CategoryVO resultVO = categoryDAO.getCategoryDetail(CategoryId);
 
-        return resultVO;
+        if (ObjectUtils.isEmpty(resultVO)) {
+            return Response.builder().data("").build();
+        }
+        return Response.builder().data(resultVO).build();
     }
 
     @Transactional
@@ -44,7 +43,6 @@ public class CategoryServiceImpl implements CategoryService{
         // uuid 생성
         String isCategoryId = UUID.randomUUID().toString().replace("-","");
         categoryDTO.setCategoryId(isCategoryId);
-
 
         return categoryDAO.insertCategory(categoryDTO);
     }

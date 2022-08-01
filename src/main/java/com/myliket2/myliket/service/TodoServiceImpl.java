@@ -1,10 +1,12 @@
 package com.myliket2.myliket.service;
 
 import com.myliket2.myliket.dao.TodoDAO;
+import com.myliket2.myliket.dto.Response;
 import com.myliket2.myliket.dto.TodoDTO;
 import com.myliket2.myliket.vo.TodoVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -18,28 +20,31 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
-    public List<TodoVO> allTodoList() throws Exception {
+    public Response allTodoList() throws Exception {
         List<TodoVO> resultList = todoDAO.allTodoList();
-
-        return resultList;
+        return Response.builder().resultList(resultList).build();
     }
 
     @Override
-    public List<TodoVO> getCategoryTodoList (String categoryId) throws Exception {
+    public Response getCategoryTodoList (String categoryId) throws Exception {
         List<TodoVO> resultList = todoDAO.getCategoryTodoList(categoryId);
-        return resultList;
+        return Response.builder().resultList(resultList).build();
     }
 
     @Override
-    public TodoVO getTodoDetail(Long todoNo) throws Exception {
+    public Response getTodoDetail(Long todoNo) throws Exception {
         TodoVO resultVO = todoDAO.getTodoDetail(todoNo);
-        return resultVO;
+
+        if (ObjectUtils.isEmpty(resultVO)) {
+            return Response.builder().data("").build();
+        }
+
+        return Response.builder().data(resultVO).build();
     }
 
     @Transactional
     @Override
     public int insertTodo(TodoDTO todoDTO) throws Exception {
-
         return todoDAO.insertTodo(todoDTO);
     }
 

@@ -1,9 +1,7 @@
 package com.myliket2.myliket.service;
 
+import com.myliket2.myliket.dto.Response;
 import com.myliket2.myliket.dto.TodoDTO;
-import com.myliket2.myliket.vo.TodoVO;
-
-import java.util.List;
 
 public interface TodoService {
 
@@ -12,14 +10,14 @@ public interface TodoService {
      * methodName : allCategoryTodoList
      * @return List<TodoVO> 할일 목록
      * */
-    List<TodoVO> allTodoList () throws Exception;
+    Response allTodoList () throws Exception;
 
     /**
      * 카테고리 {categoryId} 에 대한 전체 할일을 조회
      * methodName : getCategoryTodoList
      * @return List<TodoVO> 할일 목록
      * */
-    List<TodoVO> getCategoryTodoList (String categoryId) throws Exception;
+    Response getCategoryTodoList (String categoryId) throws Exception;
 
     /**
      * 할일 상세조회
@@ -28,7 +26,7 @@ public interface TodoService {
      * @param todoNo 요청한 할일의 고유번호
      * @return todoVO(Object) 할일 상세정보
      */
-    TodoVO getTodoDetail (Long todoNo) throws Exception;
+    Response getTodoDetail (Long todoNo) throws Exception;
 
     /**
      * 할일 등록

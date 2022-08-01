@@ -3,14 +3,10 @@ package com.myliket2.myliket.controller;
 import com.myliket2.myliket.dto.CategoryDTO;
 import com.myliket2.myliket.dto.Response;
 import com.myliket2.myliket.service.CategoryService;
-import com.myliket2.myliket.vo.CategoryVO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ObjectUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(value="/categorys")
@@ -28,12 +24,7 @@ public class CategoryRestController {
      * */
     @GetMapping(value="")
     public ResponseEntity<Response> getCategoryList () throws Exception {
-
-        List<CategoryVO> resultList = categoryService.getCategoryList();
-        Response response = Response.builder()
-        .resultList(resultList).build();
-
-
+        Response response = categoryService.getCategoryList();
         return  ResponseEntity.ok().body(response);
 
     }
@@ -47,18 +38,7 @@ public class CategoryRestController {
     @GetMapping(value ="/{categoryId}")
     public ResponseEntity<Response> getTodoDetail (@PathVariable("categoryId") String categoryId) throws Exception {
 
-        CategoryVO resultVO = categoryService.getCategoryDetail(categoryId);
-
-        if (ObjectUtils.isEmpty(resultVO)) {
-            Response response = Response.builder()
-                    .data("")
-                    .build();
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        }
-        Response response = Response.builder()
-                            .data(resultVO)
-                            .build();
-
+        Response response = categoryService.getCategoryDetail(categoryId);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

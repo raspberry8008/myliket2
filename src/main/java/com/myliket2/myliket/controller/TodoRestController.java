@@ -6,11 +6,8 @@ import com.myliket2.myliket.service.TodoService;
 import com.myliket2.myliket.vo.TodoVO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ObjectUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(value="/categorys")
@@ -29,15 +26,8 @@ public class TodoRestController {
      * */
     @GetMapping(value="/todos")
     public ResponseEntity<Response> allCategoryTodoList () throws Exception {
-
-        List<TodoVO> resultList = todoService.allTodoList();
-
-        Response response = Response.builder()
-                            .resultList(resultList)
-                            .build();
-
+        Response response = todoService.allTodoList();
         return  ResponseEntity.ok().body(response);
-
     }
 
     /**
@@ -46,13 +36,7 @@ public class TodoRestController {
      * */
     @GetMapping(value="/{categoryId}/todos")
     public ResponseEntity<Response> getCategoryTodoList (@PathVariable("categoryId") String categoryId) throws Exception {
-
-        List<TodoVO> resultList = todoService.getCategoryTodoList(categoryId);
-
-        Response response = Response.builder()
-                .resultList(resultList)
-                .build();
-
+        Response response = todoService.getCategoryTodoList(categoryId);
         return  ResponseEntity.ok().body(response);
 
     }
@@ -65,20 +49,7 @@ public class TodoRestController {
 
     @GetMapping(value ="/{categoryId}/todos/{todoNo}")
     public ResponseEntity<Response> getTodoDetail (@PathVariable("categoryId") String categoryId, @PathVariable("todoNo") Long todoNo) throws Exception {
-
-        TodoVO resultVO = todoService.getTodoDetail(todoNo);
-
-        if (ObjectUtils.isEmpty(resultVO)) {
-            Response response = Response.builder()
-                    .data("")
-                    .build();
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        }
-
-        Response response = Response.builder()
-                            .data(resultVO)
-                            .build();
-
+        Response response = todoService.getTodoDetail(todoNo);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -117,7 +88,6 @@ public class TodoRestController {
     @DeleteMapping(value = "/{categoryId}/todos/{todoNo}" )
     public ResponseEntity<Object> deleteTodo (@PathVariable("categoryId") String categoryId, @PathVariable("todoNo") Long todoNo) throws Exception {
         todoService.deleteTodo(todoNo);
-
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

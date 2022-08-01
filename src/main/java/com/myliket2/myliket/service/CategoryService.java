@@ -1,9 +1,7 @@
 package com.myliket2.myliket.service;
 
 import com.myliket2.myliket.dto.CategoryDTO;
-import com.myliket2.myliket.vo.CategoryVO;
-
-import java.util.List;
+import com.myliket2.myliket.dto.Response;
 
 
 public interface CategoryService {
@@ -13,7 +11,7 @@ public interface CategoryService {
      * methodName : getCategoryList
      * @return List<CategoryVO> 카테고리 목록
      * */
-    List<CategoryVO> getCategoryList () throws Exception;
+    Response getCategoryList () throws Exception;
 
     /**
      * 카테고리 상세조회
@@ -22,7 +20,7 @@ public interface CategoryService {
      * @param CategoryId 요청한 카테고리 아이디
      * @return todoVO(Object) 카테고리 상세정보
      */
-    CategoryVO getCategoryDetail (String CategoryId) throws Exception;
+    Response getCategoryDetail (String CategoryId) throws Exception;
 
     /**
      * 카테고리 등록
