@@ -3,7 +3,6 @@ package com.myliket2.myliket.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.myliket2.myliket.common.annotation.TodoDateTimeCheck;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -29,7 +28,7 @@ import java.util.Objects;
  *  String todoState : 할일 상태코드
  */
 
-@Getter
+
 @Setter
 @ToString
 public class TodoDTO {

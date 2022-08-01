@@ -8,7 +8,7 @@ import lombok.ToString;
 import java.time.LocalDate;
 
 /*
- *  TodoVO : 사용자가 조회 요청한 할일 상세 정보
+ *  TodoVO : 조회 요청한 할일 상세 정보
  *
  *  String categoryName : 카테고리 이름 (필수값 :TRUE)
  *  Long todoNo : 할일 고유번호 (필수값 :TRUE)
