@@ -67,6 +67,7 @@ public class CategoryRestController {
     @PutMapping( value = "")
     public ResponseEntity<Object> updateCategory (@RequestBody @Validated Category.RequestUpdate requestUpdate) throws Exception {
         categoryService.updateCategory(requestUpdate);
+
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -77,7 +78,11 @@ public class CategoryRestController {
      * */
     @DeleteMapping(value = "/{categoryId}" )
     public ResponseEntity<Object> deleteCategory (@PathVariable("categoryId") @NotBlank String categoryId) throws Exception {
-        categoryService.deleteCategory(categoryId);
+        int result=categoryService.deleteCategory(categoryId);
+
+        if(result==0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

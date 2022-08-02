@@ -97,7 +97,11 @@ public class TodoRestController {
      * */
     @DeleteMapping(value = "/{categoryId}/todos/{todoNo}" )
     public ResponseEntity<Object> deleteTodo (@PathVariable("categoryId") @NotBlank String categoryId, @PathVariable("todoNo") @NotBlank Long todoNo) throws Exception {
-        todoService.deleteTodo(todoNo);
+        int result=todoService.deleteTodo(todoNo);
+
+        if(result==0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
