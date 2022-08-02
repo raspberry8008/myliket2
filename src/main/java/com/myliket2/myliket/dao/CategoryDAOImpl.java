@@ -1,6 +1,7 @@
 package com.myliket2.myliket.dao;
 
 import com.myliket2.myliket.dto.Category;
+import com.myliket2.myliket.vo.CategoryVO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -19,27 +20,27 @@ public class CategoryDAOImpl implements CategoryDAO{
 
 
     @Override
-    public List<Category.ResponseInfo> allCategoryList() throws Exception {
+    public List<CategoryVO> allCategoryList() throws Exception {
         return sqlSession.selectList(nameSpace + ".allCategoryList");
     }
 
     @Override
-    public Category.ResponseInfo getCategoryDetail(String CategoryId) throws Exception {
-        return sqlSession.selectOne(nameSpace + ".getCategoryDetail", CategoryId);
+    public CategoryVO getCategoryDetail(CategoryVO categoryVO) throws Exception {
+        return sqlSession.selectOne(nameSpace + ".getCategoryDetail", categoryVO);
     }
 
     @Override
-    public int insertCategory(Category.RequestInsert requestInsert) throws Exception {
-        return sqlSession.insert(nameSpace + ".insertCategory", requestInsert);
+    public int insertCategory(CategoryVO categoryVO) throws Exception {
+        return sqlSession.insert(nameSpace + ".insertCategory", categoryVO);
     }
 
     @Override
-    public int updateCategory(Category.RequestUpdate requestUpdate) throws Exception {
-        return sqlSession.update(nameSpace + ".updateCategory", requestUpdate);
+    public int updateCategory(CategoryVO categoryVO) throws Exception {
+        return sqlSession.update(nameSpace + ".updateCategory", categoryVO);
     }
 
     @Override
-    public int deleteCategory(String CategoryId) throws Exception {
-        return sqlSession.delete(nameSpace + ".deleteCategory", CategoryId);
+    public int deleteCategory(CategoryVO categoryVO) throws Exception {
+        return sqlSession.delete(nameSpace + ".deleteCategory", categoryVO);
     }
 }

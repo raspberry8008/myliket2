@@ -3,6 +3,7 @@ package com.myliket2.myliket.service;
 import com.myliket2.myliket.dao.CategoryDAO;
 import com.myliket2.myliket.dto.Category;
 import com.myliket2.myliket.dto.Response;
+import com.myliket2.myliket.vo.CategoryVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -21,15 +22,15 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public Response allCategoryList() throws Exception {
-        List<Category.ResponseInfo> resultList = categoryDAO.allCategoryList();
+        List<CategoryVO> resultList = categoryDAO.allCategoryList();
         return Response.builder().resultList(resultList).build();
     }
 
     @Override
-    public Response getCategoryDetail(String CategoryId) throws Exception {
-        Category.ResponseInfo resultVO = categoryDAO.getCategoryDetail(CategoryId);
+    public Response getCategoryDetail(CategoryVO categoryVO) throws Exception {
+        CategoryVO resultVO = categoryDAO.getCategoryDetail(categoryVO);
 
-        if (ObjectUtils.isEmpty(resultVO)) {
+        if (ObjectUtils.isEmpty(resultVO) || !(categoryVO.getCategoryId().equals(resultVO.getCategoryId()))) {
             return Response.builder().data("").build();
         }
         return Response.builder().data(resultVO).build();
@@ -37,24 +38,19 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Transactional
     @Override
-    public int insertCategory(Category.RequestInsert requestInsert) throws Exception {
-
-        // uuid 생성
-        String isCategoryId = UUID.randomUUID().toString().replace("-","");
-        requestInsert.setCategoryId(isCategoryId);
-
-        return categoryDAO.insertCategory(requestInsert);
+    public int insertCategory(CategoryVO categoryVO) throws Exception {
+        return categoryDAO.insertCategory(categoryVO);
     }
 
     @Transactional
     @Override
-    public int updateCategory(Category.RequestUpdate requestUpdate ) throws Exception {
-        return categoryDAO.updateCategory(requestUpdate);
+    public int updateCategory(CategoryVO categoryVO) throws Exception {
+        return categoryDAO.updateCategory(categoryVO);
     }
 
     @Transactional
     @Override
-    public int deleteCategory(String CategoryId) throws Exception {
-        return categoryDAO.deleteCategory(CategoryId);
+    public int deleteCategory(CategoryVO categoryVO) throws Exception {
+        return categoryDAO.deleteCategory(categoryVO);
     }
 }

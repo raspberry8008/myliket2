@@ -3,12 +3,17 @@ package com.myliket2.myliket.controller;
 import com.myliket2.myliket.dto.Category;
 import com.myliket2.myliket.dto.Response;
 import com.myliket2.myliket.service.CategoryService;
+import com.myliket2.myliket.vo.CategoryVO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
+
+import java.util.UUID;
+
+import static com.myliket2.myliket.vo.CategoryVO.*;
 
 @RestController
 @RequestMapping(value="/categorys")
@@ -40,7 +45,10 @@ public class CategoryRestController {
     @GetMapping(value ="/{categoryId}")
     public ResponseEntity<Response> getCategoryDetail (@PathVariable("categoryId") @NotBlank String categoryId) throws Exception {
 
-        Response response = categoryService.getCategoryDetail(categoryId);
+        CategoryVO categoryVO = builder()
+                .categoryId(categoryId)
+                .build();
+        Response response = categoryService.getCategoryDetail(categoryVO);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -53,8 +61,10 @@ public class CategoryRestController {
      */
     @PostMapping(value = "")
     public ResponseEntity<Void> insertCategory (@RequestBody @Validated Category.RequestInsert requestInsert) throws Exception {
-
-        categoryService.insertCategory(requestInsert);
+        CategoryVO categoryVO = builder()
+                .categoryId(UUID.randomUUID().toString().replace("-",""))
+                .categoryName(requestInsert.getCategoryName()).build();
+        categoryService.insertCategory(categoryVO);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -66,7 +76,13 @@ public class CategoryRestController {
      * */
     @PutMapping( value = "")
     public ResponseEntity<Object> updateCategory (@RequestBody @Validated Category.RequestUpdate requestUpdate) throws Exception {
-        categoryService.updateCategory(requestUpdate);
+        CategoryVO categoryVO = builder()
+                .categoryId(requestUpdate.getCategoryId())
+                .categoryName(requestUpdate.getCategoryName())
+                .categoryState(requestUpdate.getCategoryState())
+                .build();
+
+        categoryService.updateCategory(categoryVO);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -78,7 +94,9 @@ public class CategoryRestController {
      * */
     @DeleteMapping(value = "/{categoryId}" )
     public ResponseEntity<Object> deleteCategory (@PathVariable("categoryId") @NotBlank String categoryId) throws Exception {
-        int result=categoryService.deleteCategory(categoryId);
+        CategoryVO categoryVO = builder().categoryId(categoryId).build();
+
+        int result=categoryService.deleteCategory(categoryVO);
 
         if(result==0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

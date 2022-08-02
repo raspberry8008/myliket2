@@ -1,6 +1,7 @@
 package com.myliket2.myliket.dao;
 
 import com.myliket2.myliket.dto.Todo;
+import com.myliket2.myliket.vo.TodoVO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -28,7 +29,7 @@ public class TodoDAOImpl implements TodoDAO {
     }
 
     @Override
-    public Todo.ResponseInfo getTodoDetail(Long todoNo) throws Exception {
+    public TodoVO getTodoDetail(Long todoNo) throws Exception {
         return sqlSession.selectOne(nameSpace + ".getTodoDetail", todoNo);
     }
 

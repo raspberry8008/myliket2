@@ -3,6 +3,7 @@ package com.myliket2.myliket.service;
 import com.myliket2.myliket.dao.TodoDAO;
 import com.myliket2.myliket.dto.Response;
 import com.myliket2.myliket.dto.Todo;
+import com.myliket2.myliket.vo.TodoVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -32,7 +33,7 @@ public class TodoServiceImpl implements TodoService{
 
     @Override
     public Response getTodoDetail(Long todoNo) throws Exception {
-        Todo.ResponseInfo resultVO = todoDAO.getTodoDetail(todoNo);
+        TodoVO resultVO = todoDAO.getTodoDetail(todoNo);
 
         if (ObjectUtils.isEmpty(resultVO)) {
             return Response.builder().data("").build();

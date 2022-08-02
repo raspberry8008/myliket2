@@ -1,6 +1,7 @@
 package com.myliket2.myliket.dao;
 
 import com.myliket2.myliket.dto.Todo;
+import com.myliket2.myliket.vo.TodoVO;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public interface TodoDAO {
      * @param todoNo 요청한 할일의 고유번호
      * @return ResponseInfo(Object) 할일 상세정보
      */
-    Todo.ResponseInfo getTodoDetail (Long todoNo) throws Exception;
+    TodoVO getTodoDetail (Long todoNo) throws Exception;
 
     /**
      * 할일 등록
