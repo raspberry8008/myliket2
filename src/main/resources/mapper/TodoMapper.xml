@@ -4,8 +4,8 @@
 
 <mapper namespace="com.myliket2.myliket.TodoMapper">
 
-    <!-- allCategoryTodoList: 전체 카테고리의 할일을 조회 한다.-->
-    <select id="allTodoList" resultType="TodoVO">
+    <!-- allTodoList: 전체 카테고리의 할일을 조회 한다.-->
+    <select id="allTodoList" resultType="com.myliket2.myliket.dto.Todo$ResponseInfo">
         /*allTodoList*/
         SELECT
             categoryName
@@ -32,7 +32,7 @@
     </select>
 
     <!-- getCategoryTodoList: 카테고리 {categoryId} 에 대한 전체 할일을 조회-->
-    <select id="getCategoryTodoList" parameterType="java.lang.String" resultType="TodoVO">
+    <select id="getCategoryTodoList" parameterType="java.lang.String" resultType="com.myliket2.myliket.dto.Todo$ResponseInfo">
         /*getCategoryTodoList*/
         SELECT
             categoryName
@@ -61,7 +61,7 @@
     </select>
 
     <!-- getTodoDetail : 할일 {todoNo}에 대한 세부정보를 조회 -->
-    <select id="getTodoDetail" parameterType="java.lang.Long"  resultType="TodoVO">
+    <select id="getTodoDetail" parameterType="java.lang.Long"  resultType="com.myliket2.myliket.dto.Todo$ResponseInfo">
         /*getTodoDetail*/
         SELECT
             categoryName
@@ -84,12 +84,12 @@
     </select>
 
     <!-- insertTodo : 할일 등록하기 -->
-    <insert id="insertTodo" parameterType="TodoDTO" useGeneratedKeys="true" keyProperty="todoNo" >
+    <insert id="insertTodo" parameterType="com.myliket2.myliket.dto.Todo$RequestInsert" >
         /*insertTodo*/
         INSERT INTO
 			tododetail
             (
-                categoryId
+                 categoryId
                 , todoTitle
                 , todoContent
                 , todoDay
@@ -108,11 +108,10 @@
               , 'TR'
               , now()
         )
-        ON DUPLICATE KEY UPDATE todoNo = LAST_INSERT_ID() + 1
     </insert>
 
     <!-- updateTodo : 할일 수정하기 -->
-    <update id="updateTodo" parameterType="TodoDTO">
+    <update id="updateTodo" parameterType="com.myliket2.myliket.dto.Todo$RequestUpdate">
         /*updateTodo*/
         UPDATE
             tododetail
@@ -122,6 +121,7 @@
           , todoContent=#{todoContent}
           , todoDay=  DATE_FORMAT(#{todoDay}, '%Y-%m-%d')
           , todoTime=DATE_FORMAT(#{todoTime}, '%H:%i:%s')
+          , todoState=#{todoState}
           , todoUpdatedAt=now()
         WHERE
             todoNo=#{todoNo}

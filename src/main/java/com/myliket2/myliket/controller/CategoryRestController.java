@@ -1,12 +1,14 @@
 package com.myliket2.myliket.controller;
 
-import com.myliket2.myliket.dto.CategoryDTO;
+import com.myliket2.myliket.dto.Category;
 import com.myliket2.myliket.dto.Response;
 import com.myliket2.myliket.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.NotBlank;
 
 @RestController
 @RequestMapping(value="/categorys")
@@ -23,8 +25,8 @@ public class CategoryRestController {
      * @return ResponseEntity<Response> 200 OK, 카테고리 정보 목록
      * */
     @GetMapping(value="")
-    public ResponseEntity<Response> getCategoryList () throws Exception {
-        Response response = categoryService.getCategoryList();
+    public ResponseEntity<Response> allCategoryList () throws Exception {
+        Response response = categoryService.allCategoryList();
         return  ResponseEntity.ok().body(response);
 
     }
@@ -36,7 +38,7 @@ public class CategoryRestController {
      * */
 
     @GetMapping(value ="/{categoryId}")
-    public ResponseEntity<Response> getTodoDetail (@PathVariable("categoryId") String categoryId) throws Exception {
+    public ResponseEntity<Response> getCategoryDetail (@PathVariable("categoryId") @NotBlank String categoryId) throws Exception {
 
         Response response = categoryService.getCategoryDetail(categoryId);
 
@@ -46,26 +48,25 @@ public class CategoryRestController {
     /**
      * 카테고리 등록 API
      *
-     * @param categoryDTO(Object) 등록할 할일정보
+     * @param requestInsert(Object) 등록할 카테고리 정보
      * @return ResponseEntity<Object> 201 Created
      */
     @PostMapping(value = "")
-    public ResponseEntity<Void> insertTodo (@RequestBody @Validated CategoryDTO categoryDTO) throws Exception {
+    public ResponseEntity<Void> insertCategory (@RequestBody @Validated Category.RequestInsert requestInsert) throws Exception {
 
-        categoryService.insertCategory(categoryDTO);
+        categoryService.insertCategory(requestInsert);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     /**
      * 카테고리 수정 API
-     * @param categoryDTO(Object) 수정할 카테고리 정보
+     * @param requestUpdate(Object) 수정할 카테고리 정보
      * @return ResponseEntity<Object> 201 Created
      * */
     @PutMapping( value = "")
-    public ResponseEntity<Object> updateTodo(@RequestBody @Validated CategoryDTO categoryDTO) throws Exception {
-        categoryService.updateCategory(categoryDTO);
-
+    public ResponseEntity<Object> updateCategory (@RequestBody @Validated Category.RequestUpdate requestUpdate) throws Exception {
+        categoryService.updateCategory(requestUpdate);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -75,7 +76,7 @@ public class CategoryRestController {
      * @return ResponseEntity<Object> 201 CREATED : 이동할 페이지 없음
      * */
     @DeleteMapping(value = "/{categoryId}" )
-    public ResponseEntity<Object> deleteTodo (@PathVariable("categoryId") String categoryId) throws Exception {
+    public ResponseEntity<Object> deleteCategory (@PathVariable("categoryId") @NotBlank String categoryId) throws Exception {
         categoryService.deleteCategory(categoryId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

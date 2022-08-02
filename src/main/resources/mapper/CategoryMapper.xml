@@ -4,9 +4,9 @@
 
 <mapper namespace="com.myliket2.myliket.CategoryMapper">
 
-    <!-- getCategoryList: 카테고리 전체조회 -->
-    <select id="getCategoryList"  resultType="CategoryVO">
-        /*getCategoryList*/
+    <!-- allCategoryList: 카테고리 전체조회 -->
+    <select id="allCategoryList"  resultType="com.myliket2.myliket.dto.Category$ResponseInfo">
+        /*allCategoryList*/
         SELECT
             HEX(categoryId) AS categoryId
              , categoryName
@@ -23,7 +23,7 @@
     </select>
 
     <!-- getCategoryDetail : 카테고리 상세조회 -->
-    <select id="getCategoryDetail" parameterType="java.lang.String" resultType="CategoryVO">
+    <select id="getCategoryDetail" parameterType="java.lang.String" resultType="com.myliket2.myliket.dto.Category$ResponseInfo">
         /*getCategoryDetail*/
         SELECT
             HEX(categoryId) AS categoryId
@@ -39,7 +39,7 @@
     </select>
 
     <!-- insertCategory : 카테고리 등록하기 -->
-    <insert id="insertCategory" parameterType="CategoryDTO"  >
+    <insert id="insertCategory" parameterType="com.myliket2.myliket.dto.Category$RequestInsert"  >
         /*insertCategory*/
         INSERT INTO
             category
@@ -62,7 +62,7 @@
     </insert>
 
     <!-- updateCategory : 카테고리 수정하기 -->
-    <update id="updateCategory" parameterType="CategoryDTO">
+    <update id="updateCategory" parameterType="com.myliket2.myliket.dto.Category$RequestUpdate">
         /*updateCategory*/
         UPDATE
             category

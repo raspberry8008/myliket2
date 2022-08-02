@@ -1,9 +1,8 @@
 package com.myliket2.myliket.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.myliket2.myliket.dto.CategoryDTO;
+import com.myliket2.myliket.dto.Category;
 import com.myliket2.myliket.service.CategoryService;
-import com.myliket2.myliket.vo.CategoryVO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +35,7 @@ class CategoryRestControllerTest {
 
     @DisplayName("카테고리 전체목록 조회 테스트")
     @Test
-    void getCategoryList() throws Exception {
+    void allCategoryList() throws Exception {
         mockMvc.perform(get("/categorys")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -45,7 +44,7 @@ class CategoryRestControllerTest {
 
     @DisplayName("카테고리 상세조회 조회 테스트")
     @Test
-    void getTodoDetail() throws Exception {
+    void getCategoryDetail() throws Exception {
         mockMvc.perform(get("/categorys/57E28D94037340779DAF421C2C493789")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -54,10 +53,10 @@ class CategoryRestControllerTest {
 
     @DisplayName("카테고리 등록 테스트")
     @Test
-    void insertTodo() throws Exception {
+    void insertCategory() throws Exception {
         String isCategoryId = UUID.randomUUID().toString().replace("-","");
 
-        CategoryVO categoryVO = CategoryVO.builder()
+        Category.RequestInsert requestInsert = Category.RequestInsert.builder()
                 .categoryId(isCategoryId)
                 .categoryName("등록테스트")
                 .build();
@@ -65,7 +64,7 @@ class CategoryRestControllerTest {
         mockMvc.perform(post("/categorys")
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(categoryVO)))
+                .content(objectMapper.writeValueAsString(requestInsert)))
                 .andExpect(status().isCreated())
                 .andDo(print());
 
@@ -73,8 +72,8 @@ class CategoryRestControllerTest {
 
     @DisplayName("카테고리 수정 테스트")
     @Test
-    void updateTodo() throws Exception {
-        CategoryDTO categoryDTO = CategoryDTO.builder()
+    void updateCategory() throws Exception {
+        Category.RequestUpdate requestUpdate = Category.RequestUpdate.builder()
                 .categoryId("57E28D94037340779DAF421C2C493789")
                 .categoryName("수정테스트")
                 .categoryState("CY")
@@ -83,14 +82,14 @@ class CategoryRestControllerTest {
         mockMvc.perform(put("/categorys")
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(categoryDTO)))
-                .andExpect(status().isCreated())
+                        .content( objectMapper.writeValueAsString(requestUpdate)))
+                .andExpect(status().is(201))
                 .andDo(print());
     }
 
     @DisplayName("카테고리 삭제 테스트")
     @Test
-    void deleteTodo() throws Exception {
+    void deleteCategory() throws Exception {
         mockMvc.perform(delete("/categorys/639D0C0FCBF9406FA303406796C3D6F4")
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)

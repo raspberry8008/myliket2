@@ -1,21 +1,21 @@
 package com.myliket2.myliket.service;
 
 import com.myliket2.myliket.dto.Response;
-import com.myliket2.myliket.dto.TodoDTO;
+import com.myliket2.myliket.dto.Todo;
 
 public interface TodoService {
 
     /**
      * 전체 카테고리의 할일을 조회 한다.
      * methodName : allCategoryTodoList
-     * @return List<TodoVO> 할일 목록
+     * @return List<ResponseInfo> 할일 목록
      * */
     Response allTodoList () throws Exception;
 
     /**
      * 카테고리 {categoryId} 에 대한 전체 할일을 조회
      * methodName : getCategoryTodoList
-     * @return List<TodoVO> 할일 목록
+     * @return List<ResponseInfo> 할일 목록
      * */
     Response getCategoryTodoList (String categoryId) throws Exception;
 
@@ -24,7 +24,7 @@ public interface TodoService {
      * methodName : getTodoDetail
      *
      * @param todoNo 요청한 할일의 고유번호
-     * @return todoVO(Object) 할일 상세정보
+     * @return ResponseInfo(Object) 할일 상세정보
      */
     Response getTodoDetail (Long todoNo) throws Exception;
 
@@ -32,18 +32,18 @@ public interface TodoService {
      * 할일 등록
      * methodName : insertTodo
      *
-     * @param todoDTO(Object) 등록할 할일정보
+     * @param requestInsert(Object) 등록할 할일정보
      * @return int 할일 추가 처리 수
      */
-    int insertTodo (TodoDTO todoDTO) throws Exception;
+    int insertTodo (Todo.RequestInsert requestInsert) throws Exception;
 
     /**
      * 할일 수정
      * methodName : updateTodo
-     * @param todoDTO(Object) 수정할 할일정보
+     * @param requestUpdate(Object) 수정할 할일정보
      * @return int 할일 수정 처리 수
      * */
-    int updateTodo(TodoDTO todoDTO) throws Exception;
+    int updateTodo(Todo.RequestUpdate requestUpdate) throws Exception;
 
     /**
      * 할일 삭제

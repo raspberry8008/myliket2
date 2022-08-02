@@ -1,7 +1,6 @@
 package com.myliket2.myliket.dao;
 
-import com.myliket2.myliket.dto.CategoryDTO;
-import com.myliket2.myliket.vo.CategoryVO;
+import com.myliket2.myliket.dto.Category;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -20,23 +19,23 @@ public class CategoryDAOImpl implements CategoryDAO{
 
 
     @Override
-    public List<CategoryVO> getCategoryList() throws Exception {
-        return sqlSession.selectList(nameSpace + ".getCategoryList");
+    public List<Category.ResponseInfo> allCategoryList() throws Exception {
+        return sqlSession.selectList(nameSpace + ".allCategoryList");
     }
 
     @Override
-    public CategoryVO getCategoryDetail(String CategoryId) throws Exception {
+    public Category.ResponseInfo getCategoryDetail(String CategoryId) throws Exception {
         return sqlSession.selectOne(nameSpace + ".getCategoryDetail", CategoryId);
     }
 
     @Override
-    public int insertCategory(CategoryDTO categoryDTO) throws Exception {
-        return sqlSession.insert(nameSpace + ".insertCategory", categoryDTO);
+    public int insertCategory(Category.RequestInsert requestInsert) throws Exception {
+        return sqlSession.insert(nameSpace + ".insertCategory", requestInsert);
     }
 
     @Override
-    public int updateCategory(CategoryDTO categoryDTO) throws Exception {
-        return sqlSession.update(nameSpace + ".updateCategory", categoryDTO);
+    public int updateCategory(Category.RequestUpdate requestUpdate) throws Exception {
+        return sqlSession.update(nameSpace + ".updateCategory", requestUpdate);
     }
 
     @Override

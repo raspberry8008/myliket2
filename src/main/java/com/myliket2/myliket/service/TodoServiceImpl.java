@@ -2,8 +2,7 @@ package com.myliket2.myliket.service;
 
 import com.myliket2.myliket.dao.TodoDAO;
 import com.myliket2.myliket.dto.Response;
-import com.myliket2.myliket.dto.TodoDTO;
-import com.myliket2.myliket.vo.TodoVO;
+import com.myliket2.myliket.dto.Todo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -21,19 +20,19 @@ public class TodoServiceImpl implements TodoService{
 
     @Override
     public Response allTodoList() throws Exception {
-        List<TodoVO> resultList = todoDAO.allTodoList();
+        List<Todo.ResponseInfo> resultList = todoDAO.allTodoList();
         return Response.builder().resultList(resultList).build();
     }
 
     @Override
     public Response getCategoryTodoList (String categoryId) throws Exception {
-        List<TodoVO> resultList = todoDAO.getCategoryTodoList(categoryId);
+        List<Todo.ResponseInfo> resultList = todoDAO.getCategoryTodoList(categoryId);
         return Response.builder().resultList(resultList).build();
     }
 
     @Override
     public Response getTodoDetail(Long todoNo) throws Exception {
-        TodoVO resultVO = todoDAO.getTodoDetail(todoNo);
+        Todo.ResponseInfo resultVO = todoDAO.getTodoDetail(todoNo);
 
         if (ObjectUtils.isEmpty(resultVO)) {
             return Response.builder().data("").build();
@@ -44,14 +43,14 @@ public class TodoServiceImpl implements TodoService{
 
     @Transactional
     @Override
-    public int insertTodo(TodoDTO todoDTO) throws Exception {
-        return todoDAO.insertTodo(todoDTO);
+    public int insertTodo(Todo.RequestInsert requestInsert) throws Exception {
+        return todoDAO.insertTodo(requestInsert);
     }
 
     @Transactional
     @Override
-    public int updateTodo(TodoDTO todoDTO) throws Exception {
-        return todoDAO.updateTodo(todoDTO);
+    public int updateTodo(Todo.RequestUpdate requestUpdate) throws Exception {
+        return todoDAO.updateTodo(requestUpdate);
     }
 
     @Transactional

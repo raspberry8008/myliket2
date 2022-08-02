@@ -1,9 +1,8 @@
 package com.myliket2.myliket.service;
 
 import com.myliket2.myliket.dao.CategoryDAO;
-import com.myliket2.myliket.dto.CategoryDTO;
+import com.myliket2.myliket.dto.Category;
 import com.myliket2.myliket.dto.Response;
-import com.myliket2.myliket.vo.CategoryVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -21,14 +20,14 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public Response getCategoryList() throws Exception {
-        List<CategoryVO> resultList = categoryDAO.getCategoryList();
+    public Response allCategoryList() throws Exception {
+        List<Category.ResponseInfo> resultList = categoryDAO.allCategoryList();
         return Response.builder().resultList(resultList).build();
     }
 
     @Override
     public Response getCategoryDetail(String CategoryId) throws Exception {
-        CategoryVO resultVO = categoryDAO.getCategoryDetail(CategoryId);
+        Category.ResponseInfo resultVO = categoryDAO.getCategoryDetail(CategoryId);
 
         if (ObjectUtils.isEmpty(resultVO)) {
             return Response.builder().data("").build();
@@ -38,19 +37,19 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Transactional
     @Override
-    public int insertCategory(CategoryDTO categoryDTO) throws Exception {
+    public int insertCategory(Category.RequestInsert requestInsert) throws Exception {
 
         // uuid 생성
         String isCategoryId = UUID.randomUUID().toString().replace("-","");
-        categoryDTO.setCategoryId(isCategoryId);
+        requestInsert.setCategoryId(isCategoryId);
 
-        return categoryDAO.insertCategory(categoryDTO);
+        return categoryDAO.insertCategory(requestInsert);
     }
 
     @Transactional
     @Override
-    public int updateCategory(CategoryDTO categoryDTO) throws Exception {
-        return categoryDAO.updateCategory(categoryDTO);
+    public int updateCategory(Category.RequestUpdate requestUpdate ) throws Exception {
+        return categoryDAO.updateCategory(requestUpdate);
     }
 
     @Transactional

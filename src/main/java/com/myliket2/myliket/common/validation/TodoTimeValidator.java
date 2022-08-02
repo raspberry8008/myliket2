@@ -12,7 +12,6 @@ public class TodoTimeValidator implements ConstraintValidator<TodoDateTimeCheck,
     @Override
     public boolean isValid(LocalDateTime checkTime, ConstraintValidatorContext constraintValidatorContext) {
         LocalDateTime nowTime = LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));
-        return checkTime.isAfter(nowTime);
-
+        return nowTime.isBefore(checkTime);
     }
 }
