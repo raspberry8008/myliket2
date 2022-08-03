@@ -1,5 +1,6 @@
 package com.myliket2.myliket.controller;
 
+import com.myliket2.myliket.common.annotation.TodoDateTimeCheck;
 import com.myliket2.myliket.domain.dto.Response;
 import com.myliket2.myliket.domain.dto.TodoDto;
 import com.myliket2.myliket.domain.vo.TodoRequestVO;
@@ -10,6 +11,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 @RestController
 @RequestMapping(value = "/categorys")
@@ -67,15 +73,30 @@ public class TodoRestController {
      */
     @PostMapping(value = "/{categoryId}/todos")
     public ResponseEntity<Void> insertTodo(@PathVariable("categoryId") @NotBlank String categoryId, @RequestBody @Validated TodoDto.RequestInsert requestInsert) throws Exception {
-        TodoRequestVO todoPathVO = TodoDto.RequestInfo.builder().categoryId(categoryId).build();
-        TodoRequestVO todoInputVO = requestInsert;
 
-        if (todoPathVO.getCategoryId().equals(todoInputVO.getCategoryId())) {
-            todoService.insertTodo(todoInputVO);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        LocalDateTime nowTime = LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));
+
+        if (requestInsert.getTodoTime() != null) {
+
+            requestInsert.setTodoDateTime(LocalDateTime.parse(LocalDateTime.of(requestInsert.getTodoDay(), requestInsert.getTodoTime())
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))));
+
+            if (nowTime.isBefore(requestInsert.getTodoDateTime())){
+                todoService.insertTodo(requestInsert);
+                return ResponseEntity.status(HttpStatus.CREATED).build();
+            }
+            System.out.println("과거시간");
         }
+
+        if (requestInsert.getTodoTime() == null) {
+            requestInsert.setTodoDateTime(LocalDateTime.parse(LocalDateTime.of(requestInsert.getTodoDay(), LocalTime.now().plusHours(1)).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))));
+            if (nowTime.isBefore(requestInsert.getTodoDateTime())){
+                todoService.insertTodo(requestInsert);
+                return ResponseEntity.status(HttpStatus.CREATED).build();
+            }
+            System.out.println("과거시간");
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     /**
@@ -88,18 +109,29 @@ public class TodoRestController {
     public ResponseEntity<Object> updateTodo(@PathVariable("categoryId") @NotBlank String categoryId, @PathVariable("todoNo") @NotBlank Long todoNo,
                                              @RequestBody @Validated TodoDto.RequestUpdate requestUpdate) throws Exception {
 
-        TodoRequestVO todoPathVO = TodoDto.RequestInfo.builder().categoryId(categoryId).todoNo(todoNo).build();
+        LocalDateTime nowTime = LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));
 
-        TodoRequestVO todoInputVO = requestUpdate;
+        if (requestUpdate.getTodoTime() != null) {
 
+            requestUpdate.setTodoDateTime(LocalDateTime.parse(LocalDateTime.of(requestUpdate.getTodoDay(), requestUpdate.getTodoTime())
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))));
 
-        if (todoPathVO.getCategoryId().equals(todoInputVO.getCategoryId()) && todoPathVO.getTodoNo().equals(todoInputVO.getTodoNo())) {
-            todoService.updateTodo(requestUpdate);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            if (nowTime.isBefore(requestUpdate.getTodoDateTime())){
+                todoService.updateTodo(requestUpdate);
+                return ResponseEntity.status(HttpStatus.CREATED).build();
+            }
+            System.out.println("과거시간");
         }
 
+        if (requestUpdate.getTodoTime() == null) {
+            requestUpdate.setTodoDateTime(LocalDateTime.parse(LocalDateTime.of(requestUpdate.getTodoDay(), LocalTime.now().plusHours(1)).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))));
+            if (nowTime.isBefore(requestUpdate.getTodoDateTime())){
+                todoService.updateTodo(requestUpdate);
+                return ResponseEntity.status(HttpStatus.CREATED).build();
+            }
+            System.out.println("과거시간");
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     /**

@@ -53,12 +53,12 @@ public class TodoRequestVO {
 
     private String stateKor; // 할일 상태코드 한글명
 //    @JsonIgnoreProperties
-//    private LocalDateTime todoDateTime;
+    private LocalDateTime todoDateTime;
 
 
     @Builder
     public TodoRequestVO(Long todoNo, String categoryId, String categoryName, String todoTitle, String todoContent, LocalDate todoDay,
-                         LocalTime todoTime, String todoState, String stateKor) {
+                         LocalTime todoTime, String todoState, String stateKor, LocalDateTime todoDateTime) {
         this.todoNo = todoNo;
         this.categoryId = categoryId;
         this.categoryName = categoryName;
@@ -68,7 +68,7 @@ public class TodoRequestVO {
         this.todoTime = todoTime;
         this.todoState = todoState;
         this.stateKor = stateKor;
-//        this.todoDateTime = todoDateTime;
+        this.todoDateTime = todoDateTime;
     }
 
 
