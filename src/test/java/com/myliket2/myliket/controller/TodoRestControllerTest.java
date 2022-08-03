@@ -1,7 +1,7 @@
 package com.myliket2.myliket.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.myliket2.myliket.dto.Todo;
+import com.myliket2.myliket.domain.dto.TodoDto;
 import com.myliket2.myliket.service.TodoService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -71,24 +72,24 @@ class TodoRestControllerTest {
     @Test
     void insertTodo() throws Exception {
 
-        Todo.RequestInsert requestInsert = Todo.RequestInsert.builder()
-                .categoryId("57E28D94037340779DAF421C2C493789")
-                .todoTitle("등록 테스트 제목")
-                .todoContent("등록 테스트 내용")
-                .todoDay(LocalDate.of(2022,8,03))
-                .todoTime(LocalTime.of(11,00,00))
-                .build();
-
-        mockMvc.perform(post("/categorys/57E28D94037340779DAF421C2C493789/todos")
-                        .accept(MediaType.APPLICATION_JSON_VALUE)
-                        //json 형식으로 데이터를 보낸다고 명시
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        //Object로 만든 todoVO을 json형식의 String으로 만들기 위해 objectMapper를 사용
-                        .content( objectMapper.writeValueAsString(requestInsert)))
-                // Http 201을 기대
-                .andExpect(status().isCreated())
-                // 화면에 결과 출력
-                .andDo(print());
+//        TodoDto.RequestInsert requestInsert = TodoDto.RequestInsert.builder()
+//                .categoryId("57E28D94037340779DAF421C2C493789")
+//                .todoTitle("등록 테스트 제목")
+//                .todoContent("등록 테스트 내용")
+//                .todoDay(LocalDate.of(2022,8,03))
+//                .todoTime(LocalTime.of(11,00,00))
+//                .build();
+//
+//        mockMvc.perform(post("/categorys/57E28D94037340779DAF421C2C493789/todos")
+//                        .accept(MediaType.APPLICATION_JSON_VALUE)
+//                        //json 형식으로 데이터를 보낸다고 명시
+//                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+//                        //Object로 만든 todoVO을 json형식의 String으로 만들기 위해 objectMapper를 사용
+//                        .content( objectMapper.writeValueAsString(requestInsert)))
+//                // Http 201을 기대
+//                .andExpect(status().isCreated())
+//                // 화면에 결과 출력
+//                .andDo(print());
     }
 
     /*
@@ -100,22 +101,22 @@ class TodoRestControllerTest {
     @Test
     void updateTodo() throws Exception {
 
-        Todo.RequestUpdate requestUpdate = Todo.RequestUpdate.builder()
-                .todoNo(4L)
-                .categoryId("57E28D94037340779DAF421C2C493789")
-                .todoTitle("수정테스트 제목")
-                .todoContent("수정테스트 내용")
-                .todoDay(LocalDate.of(2022,8,05))
-                .todoTime(LocalTime.of(11,00,00))
-                .todoState("TR")
-                .build();
+//        TodoDto.RequestUpdate requestUpdate = TodoDto.RequestUpdate.builder()
+//                .todoNo(4L)
+//                .categoryId("57E28D94037340779DAF421C2C493789")
+//                .todoTitle("수정테스트 제목")
+//                .todoContent("수정테스트 내용")
+//                .todoDay(LocalDate.of(2022,8,05))
+//                .todoTime(LocalTime.of(11,00,00))
+//                .todoState("TR")
+//                .build();
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/categorys/57E28D94037340779DAF421C2C493789/todos/4")
-                        .accept(MediaType.APPLICATION_JSON_VALUE)
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(requestUpdate)))
-                .andExpect(status().isCreated())
-                .andDo(print());
+//        mockMvc.perform(MockMvcRequestBuilders.put("/categorys/57E28D94037340779DAF421C2C493789/todos/4")
+//                        .accept(MediaType.APPLICATION_JSON_VALUE)
+//                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+//                        .content(objectMapper.writeValueAsString(requestUpdate)))
+//                .andExpect(status().isCreated())
+//                .andDo(print());
     }
 
     @DisplayName("할일 삭제 테스트")

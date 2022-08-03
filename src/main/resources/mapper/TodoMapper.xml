@@ -5,7 +5,7 @@
 <mapper namespace="com.myliket2.myliket.TodoMapper">
 
     <!-- allTodoList: 전체 카테고리의 할일을 조회 한다.-->
-    <select id="allTodoList" resultType="TodoVO">
+    <select id="allTodoList" resultType="TodoResponseVO">
         /*allTodoList*/
         SELECT
             categoryName
@@ -32,7 +32,7 @@
     </select>
 
     <!-- getCategoryTodoList: 카테고리 {categoryId} 에 대한 전체 할일을 조회-->
-    <select id="getCategoryTodoList" parameterType="java.lang.String" resultType="TodoVO">
+    <select id="getCategoryTodoList" parameterType="TodoRequestVO" resultType="TodoResponseVO">
         /*getCategoryTodoList*/
         SELECT
             categoryName
@@ -61,7 +61,7 @@
     </select>
 
     <!-- getTodoDetail : 할일 {todoNo}에 대한 세부정보를 조회 -->
-    <select id="getTodoDetail" parameterType="java.lang.Long"  resultType="TodoVO">
+    <select id="getTodoDetail" parameterType="TodoRequestVO"  resultType="TodoResponseVO">
         /*getTodoDetail*/
         SELECT
             categoryName
@@ -80,11 +80,13 @@
           AND
             t.todoState = g.stateCode
           AND
+            HEX(t.categoryId) = #{categoryId}
+          AND
             todoNo = #{todoNo}
     </select>
 
     <!-- insertTodo : 할일 등록하기 -->
-    <insert id="insertTodo" parameterType="TodoVO" >
+    <insert id="insertTodo" parameterType="TodoRequestVO" >
         /*insertTodo*/
         INSERT INTO
 			tododetail
@@ -111,7 +113,7 @@
     </insert>
 
     <!-- updateTodo : 할일 수정하기 -->
-    <update id="updateTodo" parameterType="TodoVO">
+    <update id="updateTodo" parameterType="TodoRequestVO">
         /*updateTodo*/
         UPDATE
             tododetail
@@ -124,16 +126,20 @@
           , todoState=#{todoState}
           , todoUpdatedAt=now()
         WHERE
+            HEX(categoryId) = #{categoryId}
+        AND
             todoNo=#{todoNo}
     </update>
 
     <!--deleteTodo : 할일 삭제 -->
-    <delete id="deleteTodo" parameterType="java.lang.Long" >
+    <delete id="deleteTodo" parameterType="TodoRequestVO" >
         /*deleteTodo*/
         DELETE
         FROM
             tododetail
         WHERE
+            HEX(categoryId) = #{categoryId}
+          AND
             todoNo=#{todoNo}
     </delete>
 

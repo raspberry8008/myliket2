@@ -1,7 +1,6 @@
 package com.myliket2.myliket.dao;
 
-import com.myliket2.myliket.dto.Category;
-import com.myliket2.myliket.vo.CategoryVO;
+import com.myliket2.myliket.domain.vo.CategoryVO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -30,13 +29,13 @@ public class CategoryDAOImpl implements CategoryDAO{
     }
 
     @Override
-    public int insertCategory(CategoryVO categoryVO) throws Exception {
-        return sqlSession.insert(nameSpace + ".insertCategory", categoryVO);
+    public void insertCategory(CategoryVO categoryVO) throws Exception {
+         sqlSession.insert(nameSpace + ".insertCategory", categoryVO);
     }
 
     @Override
-    public int updateCategory(CategoryVO categoryVO) throws Exception {
-        return sqlSession.update(nameSpace + ".updateCategory", categoryVO);
+    public void updateCategory(CategoryVO categoryVO) throws Exception {
+        sqlSession.update(nameSpace + ".updateCategory", categoryVO);
     }
 
     @Override

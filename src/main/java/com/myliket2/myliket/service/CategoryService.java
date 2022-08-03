@@ -1,8 +1,7 @@
 package com.myliket2.myliket.service;
 
-import com.myliket2.myliket.dto.Category;
-import com.myliket2.myliket.dto.Response;
-import com.myliket2.myliket.vo.CategoryVO;
+import com.myliket2.myliket.domain.dto.Response;
+import com.myliket2.myliket.domain.vo.CategoryVO;
 
 
 public interface CategoryService {
@@ -21,24 +20,22 @@ public interface CategoryService {
      * @param categoryVO 요청한 카테고리 아이디
      * @return Category.ResponseInfo(Object) 카테고리 상세정보
      */
-    Response getCategoryDetail (CategoryVO categoryVO) throws Exception;
+    Response getCategoryDetail (CategoryVO categoryVO) throws Exception ;
 
     /**
      * 카테고리 등록
      * methodName : insertCategory
      *
      * @param categoryVO(Object) 등록할 카테고리 정보
-     * @return int 카테고리 등록 처리 수
      */
-    int insertCategory (CategoryVO categoryVO) throws Exception;
+    void insertCategory (CategoryVO categoryVO) throws Exception;
 
     /**
      * 카테고리 수정
      * methodName : updateCategory
      * @param categoryVO(Object) 수정할 카테고리 정보
-     * @return int 카테고리 수정 처리 수
-     * */
-    int updateCategory(CategoryVO categoryVO) throws Exception;
+     */
+    void updateCategory(CategoryVO categoryVO) throws Exception;
 
     /**
      * 카테고리 삭제

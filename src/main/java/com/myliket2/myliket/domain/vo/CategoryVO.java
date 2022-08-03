@@ -1,9 +1,7 @@
-package com.myliket2.myliket.vo;
+package com.myliket2.myliket.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-
-import java.util.Objects;
 
 /*
  *  CategoryVO : 카테고리 상세정보
@@ -19,7 +17,7 @@ import java.util.Objects;
 @ToString
 @Getter
 @EqualsAndHashCode
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CategoryVO {
 
@@ -27,6 +25,7 @@ public class CategoryVO {
     private String categoryName;
     private String categoryState;
     private String stateKor;
+
     @Builder
     public CategoryVO(String categoryId, String categoryName, String categoryState, String stateKor) {
         this.categoryId = categoryId;

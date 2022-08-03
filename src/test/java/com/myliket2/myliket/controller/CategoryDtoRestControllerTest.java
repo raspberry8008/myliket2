@@ -1,7 +1,7 @@
 package com.myliket2.myliket.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.myliket2.myliket.dto.Category;
+import com.myliket2.myliket.domain.vo.CategoryVO;
 import com.myliket2.myliket.service.CategoryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class CategoryRestControllerTest {
+class CategoryDtoRestControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -56,7 +56,7 @@ class CategoryRestControllerTest {
     void insertCategory() throws Exception {
         String isCategoryId = UUID.randomUUID().toString().replace("-","");
 
-        Category.RequestInsert requestInsert = Category.RequestInsert.builder()
+        CategoryVO requestInsert = CategoryVO.builder()
                 .categoryId(isCategoryId)
                 .categoryName("등록테스트")
                 .build();
@@ -73,7 +73,8 @@ class CategoryRestControllerTest {
     @DisplayName("카테고리 수정 테스트")
     @Test
     void updateCategory() throws Exception {
-        Category.RequestUpdate requestUpdate = Category.RequestUpdate.builder()
+        CategoryVO categoryVO
+                =CategoryVO.builder()
                 .categoryId("57E28D94037340779DAF421C2C493789")
                 .categoryName("수정테스트")
                 .categoryState("CY")
@@ -82,7 +83,7 @@ class CategoryRestControllerTest {
         mockMvc.perform(put("/categorys")
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content( objectMapper.writeValueAsString(requestUpdate)))
+                        .content( objectMapper.writeValueAsString(categoryVO)))
                 .andExpect(status().is(201))
                 .andDo(print());
     }

@@ -1,9 +1,9 @@
 package com.myliket2.myliket.service;
 
 import com.myliket2.myliket.dao.TodoDAO;
-import com.myliket2.myliket.dto.Response;
-import com.myliket2.myliket.dto.Todo;
-import com.myliket2.myliket.vo.TodoVO;
+import com.myliket2.myliket.domain.dto.Response;
+import com.myliket2.myliket.domain.vo.TodoResponseVO;
+import com.myliket2.myliket.domain.vo.TodoRequestVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -21,19 +21,19 @@ public class TodoServiceImpl implements TodoService{
 
     @Override
     public Response allTodoList() throws Exception {
-        List<Todo.ResponseInfo> resultList = todoDAO.allTodoList();
+        List<TodoResponseVO> resultList = todoDAO.allTodoList();
         return Response.builder().resultList(resultList).build();
     }
 
     @Override
-    public Response getCategoryTodoList (String categoryId) throws Exception {
-        List<Todo.ResponseInfo> resultList = todoDAO.getCategoryTodoList(categoryId);
+    public Response getCategoryTodoList (TodoRequestVO todoRequestVO) throws Exception {
+        List<TodoResponseVO> resultList = todoDAO.getCategoryTodoList(todoRequestVO);
         return Response.builder().resultList(resultList).build();
     }
 
     @Override
-    public Response getTodoDetail(Long todoNo) throws Exception {
-        TodoVO resultVO = todoDAO.getTodoDetail(todoNo);
+    public Response getTodoDetail(TodoRequestVO todoRequestVO) throws Exception {
+        TodoResponseVO resultVO = todoDAO.getTodoDetail(todoRequestVO);
 
         if (ObjectUtils.isEmpty(resultVO)) {
             return Response.builder().data("").build();
@@ -44,20 +44,20 @@ public class TodoServiceImpl implements TodoService{
 
     @Transactional
     @Override
-    public int insertTodo(Todo.RequestInsert requestInsert) throws Exception {
-        return todoDAO.insertTodo(requestInsert);
+    public void insertTodo(TodoRequestVO todoRequestVO) throws Exception {
+        todoDAO.insertTodo(todoRequestVO);
     }
 
     @Transactional
     @Override
-    public int updateTodo(Todo.RequestUpdate requestUpdate) throws Exception {
-        return todoDAO.updateTodo(requestUpdate);
+    public void updateTodo(TodoRequestVO todoRequestVO) throws Exception {
+        todoDAO.updateTodo(todoRequestVO);
     }
 
     @Transactional
     @Override
-    public int deleteTodo(Long todoNo) throws Exception {
-        return todoDAO.deleteTodo(todoNo);
+    public int deleteTodo(TodoRequestVO todoRequestVO) throws Exception {
+        return todoDAO.deleteTodo(todoRequestVO);
     }
 
 }

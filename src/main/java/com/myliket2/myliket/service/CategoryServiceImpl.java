@@ -1,15 +1,12 @@
 package com.myliket2.myliket.service;
 
 import com.myliket2.myliket.dao.CategoryDAO;
-import com.myliket2.myliket.dto.Category;
-import com.myliket2.myliket.dto.Response;
-import com.myliket2.myliket.vo.CategoryVO;
+import com.myliket2.myliket.domain.dto.Response;
+import com.myliket2.myliket.domain.vo.CategoryVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
-import java.util.List;
-import java.util.UUID;
 
 @Service
 public class CategoryServiceImpl implements CategoryService{
@@ -17,35 +14,41 @@ public class CategoryServiceImpl implements CategoryService{
     private final CategoryDAO categoryDAO;
 
     public CategoryServiceImpl(CategoryDAO categoryDAO) {
+
         this.categoryDAO = categoryDAO;
+
     }
+
+
 
     @Override
     public Response allCategoryList() throws Exception {
-        List<CategoryVO> resultList = categoryDAO.allCategoryList();
-        return Response.builder().resultList(resultList).build();
+        return Response.builder().resultList(categoryDAO.allCategoryList()).build();
     }
 
     @Override
     public Response getCategoryDetail(CategoryVO categoryVO) throws Exception {
-        CategoryVO resultVO = categoryDAO.getCategoryDetail(categoryVO);
 
-        if (ObjectUtils.isEmpty(resultVO) || !(categoryVO.getCategoryId().equals(resultVO.getCategoryId()))) {
+        CategoryVO resultVO=  categoryDAO.getCategoryDetail(categoryVO);
+
+        if (ObjectUtils.isEmpty(resultVO) || ObjectUtils.nullSafeEquals(null, resultVO)) {
             return Response.builder().data("").build();
+        } else {
+            return Response.builder().data(resultVO).build();
         }
-        return Response.builder().data(resultVO).build();
+
     }
 
     @Transactional
     @Override
-    public int insertCategory(CategoryVO categoryVO) throws Exception {
-        return categoryDAO.insertCategory(categoryVO);
+    public void insertCategory(CategoryVO categoryVO) throws Exception {
+        categoryDAO.insertCategory(categoryVO);
     }
 
     @Transactional
     @Override
-    public int updateCategory(CategoryVO categoryVO) throws Exception {
-        return categoryDAO.updateCategory(categoryVO);
+    public void updateCategory(CategoryVO categoryVO) throws Exception {
+        categoryDAO.updateCategory(categoryVO);
     }
 
     @Transactional
