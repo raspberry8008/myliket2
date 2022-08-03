@@ -1,14 +1,14 @@
 package com.myliket2.myliket.domain.vo;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.myliket2.myliket.common.annotation.TodoDateTimeCheck;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Objects;
+
 
 
 
@@ -31,7 +31,8 @@ import java.util.Objects;
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonAutoDetect
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TodoRequestVO {
 
     private Long todoNo; // 할일 고유번호
@@ -52,7 +53,7 @@ public class TodoRequestVO {
     private String todoState; // 할일 상태 코드
 
     private String stateKor; // 할일 상태코드 한글명
-//    @JsonIgnoreProperties
+
     private LocalDateTime todoDateTime;
 
 
@@ -68,8 +69,10 @@ public class TodoRequestVO {
         this.todoTime = todoTime;
         this.todoState = todoState;
         this.stateKor = stateKor;
-        this.todoDateTime = todoDateTime;
+        this.todoDateTime =todoDateTime;
     }
+
+
 
 
 

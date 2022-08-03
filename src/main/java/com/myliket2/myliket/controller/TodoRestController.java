@@ -1,8 +1,9 @@
 package com.myliket2.myliket.controller;
 
-import com.myliket2.myliket.common.annotation.TodoDateTimeCheck;
 import com.myliket2.myliket.domain.dto.Response;
-import com.myliket2.myliket.domain.dto.TodoDto;
+import com.myliket2.myliket.domain.dto.TodoRequestInfoDto;
+import com.myliket2.myliket.domain.dto.TodoRequestInsertDto;
+import com.myliket2.myliket.domain.dto.TodoRequestUpdateDto;
 import com.myliket2.myliket.domain.vo.TodoRequestVO;
 import com.myliket2.myliket.service.TodoService;
 import org.springframework.http.HttpStatus;
@@ -11,10 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import javax.validation.constraints.Pattern;
 import java.util.Objects;
 
 @RestController
@@ -22,7 +20,7 @@ import java.util.Objects;
 public class TodoRestController {
 
     private final TodoService todoService;
-    private TodoDto todoVO;
+    private TodoRequestInsertDto todoVO;
 
     public TodoRestController(TodoService todoService) {
         this.todoService = todoService;
@@ -45,7 +43,7 @@ public class TodoRestController {
      */
     @GetMapping(value = "/{categoryId}/todos")
     public ResponseEntity<Response> getCategoryTodoList(@PathVariable("categoryId") @NotBlank String categoryId) throws Exception {
-        TodoRequestVO todoRequestVO = TodoDto.RequestInfo.builder().categoryId(categoryId).build();
+        TodoRequestVO todoRequestVO = new TodoRequestInfoDto.CategoryId(categoryId);
         Response response = todoService.getCategoryTodoList(todoRequestVO);
         return ResponseEntity.ok().body(response);
 
@@ -59,8 +57,10 @@ public class TodoRestController {
      */
 
     @GetMapping(value = "/{categoryId}/todos/{todoNo}")
-    public ResponseEntity<Response> getTodoDetail(@PathVariable("categoryId") @NotBlank String categoryId, @PathVariable("todoNo") @NotBlank Long todoNo) throws Exception {
-        TodoRequestVO todoRequestVO = TodoDto.RequestInfo.builder().categoryId(categoryId).todoNo(todoNo).build();
+    public ResponseEntity<Response> getTodoDetail(@PathVariable("categoryId") @NotBlank @Validated String categoryId
+            , @PathVariable("todoNo") @NotBlank Long todoNo) throws Exception {
+        TodoRequestVO todoRequestVO = new TodoRequestInfoDto.TodoNo(categoryId,todoNo);
+
         Response response = todoService.getTodoDetail(todoRequestVO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -72,29 +72,15 @@ public class TodoRestController {
      * @return ResponseEntity<Object> 201 Created
      */
     @PostMapping(value = "/{categoryId}/todos")
-    public ResponseEntity<Void> insertTodo(@PathVariable("categoryId") @NotBlank String categoryId, @RequestBody @Validated TodoDto.RequestInsert requestInsert) throws Exception {
+    public ResponseEntity<Void> insertTodo(@PathVariable("categoryId") @NotBlank String categoryId, @RequestBody @Validated TodoRequestInsertDto requestInsert) throws Exception {
 
-        LocalDateTime nowTime = LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));
+        if (Objects.equals(categoryId, requestInsert.getCategoryId())) {
 
-        if (requestInsert.getTodoTime() != null) {
+            TodoRequestVO todoRequestVO = new TodoRequestVO( null,categoryId, null, requestInsert.getTodoTitle(), requestInsert.getTodoContent(),
+                    requestInsert.getTodoDay(), requestInsert.getTodoTime(), null, null, null);
+            todoService.updateTodo(todoRequestVO);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
 
-            requestInsert.setTodoDateTime(LocalDateTime.parse(LocalDateTime.of(requestInsert.getTodoDay(), requestInsert.getTodoTime())
-                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))));
-
-            if (nowTime.isBefore(requestInsert.getTodoDateTime())){
-                todoService.insertTodo(requestInsert);
-                return ResponseEntity.status(HttpStatus.CREATED).build();
-            }
-            System.out.println("과거시간");
-        }
-
-        if (requestInsert.getTodoTime() == null) {
-            requestInsert.setTodoDateTime(LocalDateTime.parse(LocalDateTime.of(requestInsert.getTodoDay(), LocalTime.now().plusHours(1)).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))));
-            if (nowTime.isBefore(requestInsert.getTodoDateTime())){
-                todoService.insertTodo(requestInsert);
-                return ResponseEntity.status(HttpStatus.CREATED).build();
-            }
-            System.out.println("과거시간");
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
@@ -107,29 +93,15 @@ public class TodoRestController {
      */
     @PutMapping(value = "/{categoryId}/todos/{todoNo}")
     public ResponseEntity<Object> updateTodo(@PathVariable("categoryId") @NotBlank String categoryId, @PathVariable("todoNo") @NotBlank Long todoNo,
-                                             @RequestBody @Validated TodoDto.RequestUpdate requestUpdate) throws Exception {
+                                             @RequestBody @Validated TodoRequestUpdateDto requestUpdate) throws Exception {
 
-        LocalDateTime nowTime = LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));
-
-        if (requestUpdate.getTodoTime() != null) {
-
-            requestUpdate.setTodoDateTime(LocalDateTime.parse(LocalDateTime.of(requestUpdate.getTodoDay(), requestUpdate.getTodoTime())
-                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))));
-
-            if (nowTime.isBefore(requestUpdate.getTodoDateTime())){
-                todoService.updateTodo(requestUpdate);
+        if (Objects.equals(categoryId, requestUpdate.getCategoryId())) {
+            if (Objects.equals(todoNo, requestUpdate.getTodoNo())) {
+                TodoRequestVO todoRequestVO = new TodoRequestVO(todoNo, categoryId, null, requestUpdate.getTodoTitle(), requestUpdate.getTodoContent(),
+                        requestUpdate.getTodoDay(), requestUpdate.getTodoTime(), requestUpdate.getTodoState(), null, null);
+                todoService.updateTodo(todoRequestVO);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
-            System.out.println("과거시간 입니다.");
-        }
-
-        if (requestUpdate.getTodoTime() == null) {
-            requestUpdate.setTodoDateTime(LocalDateTime.parse(LocalDateTime.of(requestUpdate.getTodoDay(), LocalTime.now().plusHours(1)).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))));
-            if (nowTime.isBefore(requestUpdate.getTodoDateTime())){
-                todoService.updateTodo(requestUpdate);
-                return ResponseEntity.status(HttpStatus.CREATED).build();
-            }
-            System.out.println("과거시간 시간입니다.");
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
@@ -141,8 +113,10 @@ public class TodoRestController {
      * @return ResponseEntity<Object> 201 CREATED : 이동할 페이지 없음
      */
     @DeleteMapping(value = "/{categoryId}/todos/{todoNo}")
-    public ResponseEntity<Object> deleteTodo(@PathVariable("categoryId") @NotBlank String categoryId, @PathVariable("todoNo") @NotBlank Long todoNo) throws Exception {
-        TodoRequestVO todoRequestVO = TodoDto.RequestInfo.builder().categoryId(categoryId).todoNo(todoNo).build();
+    public ResponseEntity<Object> deleteTodo(@PathVariable("categoryId") @NotBlank String categoryId
+            , @PathVariable("todoNo") @NotBlank Long todoNo) throws Exception {
+        TodoRequestVO todoRequestVO = new TodoRequestInfoDto.TodoNo(categoryId,todoNo);
+
         int result = todoService.deleteTodo(todoRequestVO);
 
         if (result == 0) {
