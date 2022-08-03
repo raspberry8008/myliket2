@@ -129,7 +129,7 @@ public class TodoRestController {
                 todoService.updateTodo(requestUpdate);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
-            System.out.println("과거시간");
+            System.out.println("과거시간 시간입니다.");
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
