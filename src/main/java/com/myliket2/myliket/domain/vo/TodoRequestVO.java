@@ -1,19 +1,15 @@
 package com.myliket2.myliket.domain.vo;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.myliket2.myliket.common.annotation.TodoDateTimeCheck;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 
 
 
 /*
- *  TodoVO : 할일 상세 정보
+ *  TodoRequestVO : 사용자가 입력한 할일 상세 정보
  *
  *  Long todoNo : 할일 고유번호
  *  String categoryId : 카테고리 이름
@@ -23,7 +19,6 @@ import java.time.LocalTime;
  *  String todoContent : 할일 내용
  *  LocalDate todoDay : 할일 일정일자
  *  LocalTime todoTime : 할일 일정시간
- *  LocalDateTime todoDayTime : 할일 일정일자 및 시간
  *  String stateKor : 할일 상태코드 한글명
  */
 
@@ -31,8 +26,6 @@ import java.time.LocalTime;
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@JsonAutoDetect
-//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TodoRequestVO {
 
     private Long todoNo; // 할일 고유번호
@@ -45,7 +38,6 @@ public class TodoRequestVO {
 
     private String todoContent; // 할일 내용
 
-//    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate todoDay; // 할일 일정일자
 
     private LocalTime todoTime; // 할일 일정시간
@@ -54,12 +46,11 @@ public class TodoRequestVO {
 
     private String stateKor; // 할일 상태코드 한글명
 
-    private LocalDateTime todoDateTime;
 
 
     @Builder
     public TodoRequestVO(Long todoNo, String categoryId, String categoryName, String todoTitle, String todoContent, LocalDate todoDay,
-                         LocalTime todoTime, String todoState, String stateKor, LocalDateTime todoDateTime) {
+                         LocalTime todoTime, String todoState, String stateKor) {
         this.todoNo = todoNo;
         this.categoryId = categoryId;
         this.categoryName = categoryName;
@@ -69,11 +60,28 @@ public class TodoRequestVO {
         this.todoTime = todoTime;
         this.todoState = todoState;
         this.stateKor = stateKor;
-        this.todoDateTime =todoDateTime;
     }
 
+    @Builder
+    public TodoRequestVO(String categoryId, String todoTitle, String todoContent, LocalDate todoDay,
+                         LocalTime todoTime) {
+        this.categoryId = categoryId;
+        this.todoTitle = todoTitle;
+        this.todoContent = todoContent;
+        this.todoDay = todoDay;
+        this.todoTime = todoTime;
+    }
 
-
-
+    @Builder
+    public TodoRequestVO(Long todoNo, String categoryId, String todoTitle, String todoContent, LocalDate todoDay,
+                         LocalTime todoTime, String todoState) {
+        this.todoNo = todoNo;
+        this.categoryId = categoryId;
+        this.todoTitle = todoTitle;
+        this.todoContent = todoContent;
+        this.todoDay = todoDay;
+        this.todoTime = todoTime;
+        this.todoState = todoState;
+    }
 
 }

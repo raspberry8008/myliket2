@@ -12,8 +12,6 @@ import lombok.*;
  *  String stateKor : 카테고리 상태코드 한글명
  */
 
-
-
 @ToString
 @Getter
 @EqualsAndHashCode

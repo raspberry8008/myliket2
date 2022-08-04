@@ -1,30 +1,27 @@
 package com.myliket2.myliket.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.myliket2.myliket.common.annotation.TodoDateTimeCheck;
 import com.myliket2.myliket.domain.vo.TodoRequestVO;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
+/*
+ *  TodoRequestInfoDto : 조회 요청 정보
+ *
+ *  String categoryId : 카테고리 아이디
+ *  String todoNo : 할일 고유번호
+ *
+ */
 @ToString
 public class TodoRequestInfoDto {
 
-    /*
-     *  TodoRequestInfoDto : 조회 요청 정보
-     *
-     *  String categoryId : 카테고리 아이디
-     *  String todoNo : 할일 고유번호
-     *
-     */
+
     @Getter
     @Setter
     @ToString
@@ -36,7 +33,7 @@ public class TodoRequestInfoDto {
         private String categoryId; // 카테고리 아이디
 
         public CategoryId(String categoryId) {
-            this.categoryId=categoryId;
+            this.categoryId = categoryId;
 
         }
 
@@ -57,8 +54,8 @@ public class TodoRequestInfoDto {
         private Long todoNo; // 할일 고유번호
 
         public TodoNo(String categoryId, Long todoNo) {
-            this.categoryId=categoryId;
-            this.todoNo=todoNo;
+            this.categoryId = categoryId;
+            this.todoNo = todoNo;
 
         }
     }

@@ -8,7 +8,7 @@
     <select id="allTodoList" resultType="TodoResponseVO">
         /*allTodoList*/
         SELECT
-            categoryName
+             categoryName
              , todoNo
              , todoTitle
              , todoContent
@@ -64,7 +64,8 @@
     <select id="getTodoDetail" parameterType="TodoRequestVO"  resultType="TodoResponseVO">
         /*getTodoDetail*/
         SELECT
-            categoryName
+            HEX(t.categoryId) AS categoryId
+             , categoryName
              , todoNo
              , todoTitle
              , todoContent

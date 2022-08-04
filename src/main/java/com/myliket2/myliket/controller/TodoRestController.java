@@ -12,7 +12,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.util.Objects;
 
 @RestController
@@ -20,7 +19,6 @@ import java.util.Objects;
 public class TodoRestController {
 
     private final TodoService todoService;
-    private TodoRequestInsertDto todoVO;
 
     public TodoRestController(TodoService todoService) {
         this.todoService = todoService;
@@ -59,7 +57,7 @@ public class TodoRestController {
     @GetMapping(value = "/{categoryId}/todos/{todoNo}")
     public ResponseEntity<Response> getTodoDetail(@PathVariable("categoryId") @NotBlank @Validated String categoryId
             , @PathVariable("todoNo") @NotBlank Long todoNo) throws Exception {
-        TodoRequestVO todoRequestVO = new TodoRequestInfoDto.TodoNo(categoryId,todoNo);
+        TodoRequestVO todoRequestVO = new TodoRequestInfoDto.TodoNo(categoryId, todoNo);
 
         Response response = todoService.getTodoDetail(todoRequestVO);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -76,9 +74,9 @@ public class TodoRestController {
 
         if (Objects.equals(categoryId, requestInsert.getCategoryId())) {
 
-            TodoRequestVO todoRequestVO = new TodoRequestVO( null,categoryId, null, requestInsert.getTodoTitle(), requestInsert.getTodoContent(),
-                    requestInsert.getTodoDay(), requestInsert.getTodoTime(), null, null, null);
-            todoService.updateTodo(todoRequestVO);
+            TodoRequestVO todoRequestVO = new TodoRequestVO(categoryId, requestInsert.getTodoTitle(), requestInsert.getTodoContent(),
+                    requestInsert.getTodoDay(), requestInsert.getTodoTime());
+            todoService.insertTodo(todoRequestVO);
             return ResponseEntity.status(HttpStatus.CREATED).build();
 
         }
@@ -97,8 +95,8 @@ public class TodoRestController {
 
         if (Objects.equals(categoryId, requestUpdate.getCategoryId())) {
             if (Objects.equals(todoNo, requestUpdate.getTodoNo())) {
-                TodoRequestVO todoRequestVO = new TodoRequestVO(todoNo, categoryId, null, requestUpdate.getTodoTitle(), requestUpdate.getTodoContent(),
-                        requestUpdate.getTodoDay(), requestUpdate.getTodoTime(), requestUpdate.getTodoState(), null, null);
+                TodoRequestVO todoRequestVO = new TodoRequestVO(todoNo, categoryId, requestUpdate.getTodoTitle(), requestUpdate.getTodoContent(),
+                        requestUpdate.getTodoDay(), requestUpdate.getTodoTime(), requestUpdate.getTodoState());
                 todoService.updateTodo(todoRequestVO);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
@@ -109,13 +107,13 @@ public class TodoRestController {
     /**
      * 할일 삭제 API
      *
-     * @param todoNo 삭제할 할일 객체의 고유번호
+     * @param categoryId, todoNo 삭제할 할일의 카테고리아이디와 할일 고유번호
      * @return ResponseEntity<Object> 201 CREATED : 이동할 페이지 없음
      */
     @DeleteMapping(value = "/{categoryId}/todos/{todoNo}")
     public ResponseEntity<Object> deleteTodo(@PathVariable("categoryId") @NotBlank String categoryId
             , @PathVariable("todoNo") @NotBlank Long todoNo) throws Exception {
-        TodoRequestVO todoRequestVO = new TodoRequestInfoDto.TodoNo(categoryId,todoNo);
+        TodoRequestVO todoRequestVO = new TodoRequestInfoDto.TodoNo(categoryId, todoNo);
 
         int result = todoService.deleteTodo(todoRequestVO);
 

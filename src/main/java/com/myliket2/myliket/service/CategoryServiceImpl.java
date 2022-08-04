@@ -9,16 +9,11 @@ import org.springframework.util.ObjectUtils;
 
 
 @Service
-public class CategoryServiceImpl implements CategoryService{
+public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryDAO categoryDAO;
 
-    public CategoryServiceImpl(CategoryDAO categoryDAO) {
-
-        this.categoryDAO = categoryDAO;
-
-    }
-
+    public CategoryServiceImpl(CategoryDAO categoryDAO) {this.categoryDAO = categoryDAO;}
 
 
     @Override
@@ -29,14 +24,13 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public Response getCategoryDetail(CategoryVO categoryVO) throws Exception {
 
-        CategoryVO resultVO=  categoryDAO.getCategoryDetail(categoryVO);
+        CategoryVO resultVO = categoryDAO.getCategoryDetail(categoryVO);
 
         if (ObjectUtils.isEmpty(resultVO) || ObjectUtils.nullSafeEquals(null, resultVO)) {
             return Response.builder().data("").build();
         } else {
             return Response.builder().data(resultVO).build();
         }
-
     }
 
     @Transactional

@@ -13,65 +13,59 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
+/*
+ *  TodoRequestInsertDto : 등록할 할일 상세 정보
+ *
+ *  String categoryId : 카테고리 아이디 (필수값 :TRUE)
+ *  String todoTitle : 할일 제목 (필수값 :TRUE)
+ *  String todoContent : 할일 내용 (필수값 :TRUE)
+ *  LocalDate todoDay : 할일 일정일자 (필수값 :TRUE)
+ *  LocalTime todoTime : 할일 일정시간
+ *  LocalDateTime checkDateTime : 할일 일정 및 시간 (todoDay + todoTime - 유효성검증)
+ *
+ */
 @Getter
 @Setter
 @ToString
 public class TodoRequestInsertDto {
-
-    /*
-     *  TodoUpdateDto : 수정할 할일 상세 정보
-     *
-     *  String categoryId : 카테고리 아이디 (필수값 :TRUE)
-     *  String todoTitle : 할일 제목 (필수값 :TRUE)
-     *  String todoContent : 할일 내용 (필수값 :TRUE)
-     *  LocalDate todoDay : 할일 일정일자 (필수값 :TRUE)
-     *  LocalTime todoTime : 할일 일정시간
-     *  String todoState: 할일 상태 코드 (필수값 :TRUE)
-     *  LocalDateTime checkDateTime : 할일 일정 및 시간 (todoDay + todoTime - 유효성검증)
-     *
-     */
 
     @NotBlank
     @Pattern(regexp = "[A-Z0-9]{32}$", message = "카테고리 아이디를 입력해주세요.")
     private String categoryId; // 카테고리 아이디
 
     @NotBlank
-    @Size(min=1, max=15)
+    @Size(min = 1, max = 15)
     private String todoTitle; // 할일 제목
 
     @NotBlank
-    @Size(min=1, max=100)
+    @Size(min = 1, max = 100)
     private String todoContent; // 할일 내용
 
 
     @NotNull(message = "일정을 입력해주세요.")
-    private  LocalDate todoDay; // 할일 일정일자
+    private LocalDate todoDay; // 할일 일정일자
 
-    private  LocalTime todoTime; // 할일 시간
+    private LocalTime todoTime; // 할일 시간
 
     @TodoDateTimeCheck
     private LocalDateTime todoDateTime;
 
-    @Pattern(regexp = "^[A-Z]{2}$", message = "할일 상태코드를 입력해주세요.")
-    private String todoState; // 할일 상태 코드
 
     @Builder
-    public TodoRequestInsertDto(String categoryId, String todoTitle, String todoContent, LocalDate todoDay, LocalTime todoTime, String todoState) {
+    public TodoRequestInsertDto(String categoryId, String todoTitle, String todoContent, LocalDate todoDay, LocalTime todoTime) {
         this.categoryId = categoryId;
         this.todoTitle = todoTitle;
         this.todoContent = todoContent;
         this.todoDay = todoDay;
         this.todoTime = todoTime;
-        this.todoState = todoState;
-        this.todoDateTime = todoDateTimeMake( todoDay,todoTime );
+        this.todoDateTime = todoDateTimeMake(todoDay, todoTime);
     }
 
 
-
     /*
-                todoDateTimeMake : 유효성 검증용 LocalDateTime
-                @param : todoDay(할일일정 일자), todoTime (할일 일정시간)
-             */
+      todoDateTimeMake : 유효성 검증용 LocalDateTime
+       @param : todoDay(할일일정 일자), todoTime (할일 일정시간)
+    */
     private LocalDateTime todoDateTimeMake(LocalDate todoDay, LocalTime todoTime) {
 
         if (Objects.equals(null, todoTime)) {
@@ -79,6 +73,5 @@ public class TodoRequestInsertDto {
         }
         return LocalDateTime.parse(LocalDateTime.of(todoDay, todoTime).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));
     }
-
 
 }
