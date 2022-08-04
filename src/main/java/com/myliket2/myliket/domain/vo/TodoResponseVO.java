@@ -22,10 +22,13 @@ import java.time.LocalDate;
 
 @Getter
 @EqualsAndHashCode
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TodoResponseVO {
 
     private String categoryId; // 카테고리 아이디
+
+    private Long todoNo; // 할일 고유번호
 
     private String categoryName; // 카테고리 이름
 
@@ -44,35 +47,5 @@ public class TodoResponseVO {
     private String todoState; // 할일 상태 코드
 
     private String stateKor; // 할일 상태코드 한글명
-
-    @Builder
-    public TodoResponseVO() {
-
-    }
-
-    @Builder
-    public TodoResponseVO(String categoryId, String categoryName, String todoTitle, String todoContent, LocalDate todoDay,
-                          String todoTime, String stateKor) {
-        this.categoryId = categoryId;
-        this.categoryName = categoryName;
-        this.todoTitle = todoTitle;
-        this.todoContent = todoContent;
-        this.todoDay = todoDay;
-        this.todoTime = todoTime;
-        this.stateKor = stateKor;
-    }
-
-    @Builder
-    public TodoResponseVO(String categoryId, String categoryName, String todoTitle, String todoContent, LocalDate todoDay,
-                          String todoTime, String todoState, String stateKor) {
-        this.categoryId = categoryId;
-        this.categoryName = categoryName;
-        this.todoTitle = todoTitle;
-        this.todoContent = todoContent;
-        this.todoDay = todoDay;
-        this.todoTime = todoTime;
-        this.todoState = todoState;
-        this.stateKor = stateKor;
-    }
 
 }
