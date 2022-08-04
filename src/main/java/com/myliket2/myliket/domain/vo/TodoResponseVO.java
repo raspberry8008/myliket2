@@ -21,9 +21,10 @@ import java.time.LocalDate;
 
 
 @Getter
-@EqualsAndHashCode
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+//@EqualsAndHashCode
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @JsonInclude(JsonInclude.Include.NON_NULL)
+//@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class TodoResponseVO {
 
     private String categoryId; // 카테고리 아이디
@@ -39,10 +40,6 @@ public class TodoResponseVO {
     private LocalDate todoDay; // 할일 일정일자
 
     private String todoTime ; // 할일 일정시간
-
-    {
-        todoTime ="";
-    }
 
     private String todoState; // 할일 상태 코드
 

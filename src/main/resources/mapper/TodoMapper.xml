@@ -5,7 +5,7 @@
 <mapper namespace="com.myliket2.myliket.TodoMapper">
 
     <!-- allTodoList: 전체 카테고리의 할일을 조회 한다.-->
-    <select id="allTodoList" resultType="TodoResponseVO">
+    <select id="allTodoList" resultType="TodoRequestVO">
         /*allTodoList*/
         SELECT
              categoryName
