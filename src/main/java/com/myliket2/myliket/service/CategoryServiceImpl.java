@@ -3,6 +3,7 @@ package com.myliket2.myliket.service;
 import com.myliket2.myliket.dao.CategoryDAO;
 import com.myliket2.myliket.domain.dto.Response;
 import com.myliket2.myliket.domain.vo.CategoryVO;
+import com.myliket2.myliket.domain.vo.TodoVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -27,7 +28,8 @@ public class CategoryServiceImpl implements CategoryService {
         CategoryVO resultVO = categoryDAO.getCategoryDetail(categoryVO);
 
         if (ObjectUtils.isEmpty(resultVO) || ObjectUtils.nullSafeEquals(null, resultVO)) {
-            return Response.builder().data("").build();
+            CategoryVO categoryVO2 = CategoryVO.builder().build();
+            return Response.builder().data(categoryVO2).build();
         } else {
             return Response.builder().data(resultVO).build();
         }

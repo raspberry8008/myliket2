@@ -1,7 +1,6 @@
 package com.myliket2.myliket.dao;
 
-import com.myliket2.myliket.domain.vo.TodoResponseVO;
-import com.myliket2.myliket.domain.vo.TodoRequestVO;
+import com.myliket2.myliket.domain.vo.TodoVO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -19,32 +18,32 @@ public class TodoDAOImpl implements TodoDAO {
 
 
     @Override
-    public List<TodoResponseVO> allTodoList() throws Exception {
+    public List<TodoVO> allTodoList() throws Exception {
         return sqlSession.selectList(nameSpace + ".allTodoList");
     }
 
     @Override
-    public List<TodoResponseVO> getCategoryTodoList(TodoRequestVO todoRequestVO) throws Exception {
-        return sqlSession.selectList(nameSpace + ".getCategoryTodoList", todoRequestVO);
+    public List<TodoVO> getCategoryTodoList(TodoVO todoVO) throws Exception {
+        return sqlSession.selectList(nameSpace + ".getCategoryTodoList", todoVO);
     }
 
     @Override
-    public TodoResponseVO getTodoDetail(TodoRequestVO todoRequestVO) throws Exception {
-        return sqlSession.selectOne(nameSpace + ".getTodoDetail", todoRequestVO);
+    public TodoVO getTodoDetail(TodoVO todoVO) throws Exception {
+        return sqlSession.selectOne(nameSpace + ".getTodoDetail", todoVO);
     }
 
     @Override
-    public void insertTodo(TodoRequestVO todoRequestVO) throws Exception {
-        sqlSession.insert(nameSpace + ".insertTodo", todoRequestVO);
+    public void insertTodo(TodoVO todoVO) throws Exception {
+        sqlSession.insert(nameSpace + ".insertTodo", todoVO);
     }
 
     @Override
-    public void updateTodo(TodoRequestVO todoRequestVO) throws Exception {
-        sqlSession.update(nameSpace + ".updateTodo", todoRequestVO);
+    public void updateTodo(TodoVO todoVO) throws Exception {
+        sqlSession.update(nameSpace + ".updateTodo", todoVO);
     }
 
     @Override
-    public int deleteTodo(TodoRequestVO todoRequestVO) throws Exception {
-        return sqlSession.delete(nameSpace + ".deleteTodo", todoRequestVO);
+    public int deleteTodo(TodoVO todoVO) throws Exception {
+        return sqlSession.delete(nameSpace + ".deleteTodo", todoVO);
     }
 }
