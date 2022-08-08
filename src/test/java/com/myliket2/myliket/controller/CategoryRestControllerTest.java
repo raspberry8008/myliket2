@@ -1,6 +1,7 @@
 package com.myliket2.myliket.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.myliket2.myliket.domain.dto.CategoryDto;
 import com.myliket2.myliket.domain.vo.CategoryVO;
 import com.myliket2.myliket.service.CategoryService;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class CategoryDtoRestControllerTest {
+class CategoryRestControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -56,7 +57,7 @@ class CategoryDtoRestControllerTest {
     void insertCategory() throws Exception {
         String isCategoryId = UUID.randomUUID().toString().replace("-","");
 
-        CategoryVO requestInsert = CategoryVO.builder()
+        CategoryVO categoryVO  = CategoryDto.RequestInsert.builder()
                 .categoryId(isCategoryId)
                 .categoryName("등록테스트")
                 .build();
@@ -64,7 +65,7 @@ class CategoryDtoRestControllerTest {
         mockMvc.perform(post("/categorys")
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(requestInsert)))
+                .content(objectMapper.writeValueAsString(categoryVO)))
                 .andExpect(status().isCreated())
                 .andDo(print());
 
@@ -74,7 +75,7 @@ class CategoryDtoRestControllerTest {
     @Test
     void updateCategory() throws Exception {
         CategoryVO categoryVO
-                =CategoryVO.builder()
+                =CategoryDto.RequestUpdate.builder()
                 .categoryId("57E28D94037340779DAF421C2C493789")
                 .categoryName("수정테스트")
                 .categoryState("CY")
@@ -91,11 +92,13 @@ class CategoryDtoRestControllerTest {
     @DisplayName("카테고리 삭제 테스트")
     @Test
     void deleteCategory() throws Exception {
-        mockMvc.perform(delete("/categorys/639D0C0FCBF9406FA303406796C3D6F4")
+        String categoryId = "ddcb9269ae614df6933ffb7bdb5de61b";
+        CategoryVO categoryVO = CategoryDto.RequestInfo.builder().categoryId(categoryId).build();
+        mockMvc.perform(delete("/categorys/ddcb9269ae614df6933ffb7bdb5de61b")
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content( objectMapper.writeValueAsString("639D0C0FCBF9406FA303406796C3D6F4")))
-                .andExpect(status().is(201))
+                        .content( objectMapper.writeValueAsString(categoryVO)))
+                .andExpect(status().isCreated())
                 .andDo(print());
     }
 }

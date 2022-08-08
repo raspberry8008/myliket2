@@ -13,11 +13,11 @@
              , todoTitle
              , todoContent
              , DATE_FORMAT(todoDay, '%Y-%m-%d') AS todoDay
-             , DATE_FORMAT(todoTime, '%Y-%m-%d %H:%i:%s') AS todoTime
+             , DATE_FORMAT(todoTime, '%H:%i:%s') AS todoTime
              , stateKor
         FROM
             category AS c
-           , testtododetail AS t
+           , tododetail AS t
            , grbstate AS g
         WHERE
             c.categoryId = t.categoryId
@@ -27,7 +27,6 @@
             todoNo
         ORDER BY
             todoDay ASC
-               , todoTime IS NULL ASC
                , todoTime ASC
     </select>
 
@@ -40,11 +39,11 @@
              , todoTitle
              , todoContent
              , DATE_FORMAT(todoDay, '%Y-%m-%d') AS todoDay
-             , DATE_FORMAT(todoTime, '%Y-%m-%d %H:%i:%s') AS todoTime
+             , DATE_FORMAT(todoTime, '%H:%i:%s') AS todoTime
              , stateKor
         FROM
             category AS c
-           , testtododetail AS t
+           , tododetail AS t
            , grbstate AS g
         WHERE
             c.categoryId = t.categoryId
@@ -56,7 +55,6 @@
             todoNo
         ORDER BY
             todoDay ASC
-               , todoTime IS NULL ASC
                , todoTime ASC
     </select>
 
@@ -70,11 +68,11 @@
              , todoTitle
              , todoContent
              , DATE_FORMAT(todoDay, '%Y-%m-%d') AS todoDay
-             , DATE_FORMAT(todoTime, '%Y-%m-%d %H:%i:%s') AS todoTime
+             , DATE_FORMAT(todoTime, '%H:%i:%s') AS todoTime
              , stateKor
         FROM
             category AS c
-           , testtododetail AS t
+           , tododetail AS t
            , grbstate AS g
         WHERE
             c.categoryId = t.categoryId
@@ -90,7 +88,7 @@
     <insert id="insertTodo" parameterType="TodoVO" >
         /*insertTodo*/
         INSERT INTO
-            testtododetail
+            tododetail
             (
                  categoryId
                 , todoTitle
@@ -107,8 +105,8 @@
                 UNHEX(#{categoryId})
 		      , #{todoTitle}
               , #{todoContent}
-              , #{todoDay}
-              , DATE_FORMAT(#{todoTime}, '%Y-%m-%d %H:%i:%s')
+              , DATE_FORMAT(#{todoDayTime}, '%Y-%m-%d')
+              , DATE_FORMAT(#{todoDayTime}, '%H:%i:%s')
               , 'TR'
               , now()
               , now()
@@ -119,13 +117,13 @@
     <update id="updateTodo" parameterType="TodoVO">
         /*updateTodo*/
         UPDATE
-            testtododetail
+            tododetail
         SET
             categoryId=UNHEX(#{categoryId})
           , todoTitle=#{todoTitle}
           , todoContent=#{todoContent}
-          , todoDay=  DATE_FORMAT(#{todoDay}, '%Y-%m-%d')
-          , todoTime=DATE_FORMAT(#{todoTime}, '%H:%i:%s')
+          , todoDay= DATE_FORMAT(#{todoDayTime}, '%Y-%m-%d')
+          , todoTime=DATE_FORMAT(#{todoDayTime}, '%H:%i:%s')
           , todoState=#{todoState}
           , todoUpdatedAt=now()
         WHERE
@@ -139,7 +137,7 @@
         /*deleteTodo*/
         DELETE
         FROM
-            testtododetail
+            tododetail
         WHERE
             HEX(categoryId) = #{categoryId}
           AND
