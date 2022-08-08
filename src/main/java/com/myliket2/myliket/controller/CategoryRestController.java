@@ -42,7 +42,7 @@ public class CategoryRestController {
 
     @GetMapping(value = "/{categoryId}")
     public ResponseEntity<Response> getCategoryDetail(@PathVariable("categoryId") @NotBlank String categoryId) throws Exception {
-        CategoryVO categoryVO = CategoryVO.builder().categoryId(categoryId).build();
+        CategoryVO categoryVO = CategoryDto.RequestInfo.builder().categoryId(categoryId).build();
         return ResponseEntity.ok().body(categoryService.getCategoryDetail(categoryVO));
 
     }

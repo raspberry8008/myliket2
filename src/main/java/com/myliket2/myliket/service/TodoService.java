@@ -8,14 +8,14 @@ public interface TodoService {
     /**
      * 전체 카테고리의 할일을 조회 한다.
      * methodName : allCategoryTodoList
-     * @return List<ResponseInfo> 할일 목록
+     * @return List<?> 할일 목록
      * */
     Response allTodoList () throws Exception;
 
     /**
      * 카테고리 {categoryId} 에 대한 전체 할일을 조회
      * methodName : getCategoryTodoList
-     * @return List<ResponseInfo> 할일 목록
+     * @return List<?> 할일 목록
      * */
     Response getCategoryTodoList (TodoVO todoVO) throws Exception;
 
@@ -24,7 +24,7 @@ public interface TodoService {
      * methodName : getTodoDetail
      *
      * @param todoVO 요청한 할일의 고유번호
-     * @return ResponseInfo(Object) 할일 상세정보
+     * @return todoVO(Object) 할일 상세정보
      */
     Response getTodoDetail (TodoVO todoVO) throws Exception;
 

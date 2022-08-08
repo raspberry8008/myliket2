@@ -14,6 +14,22 @@ import java.util.UUID;
 
 public class CategoryDto  {
 
+    /*
+     *  CategoryDto.RequestInfo : 조회 요청한 카테고리 정보
+     *
+     *  String categoryId : 카테고리 아이디 (기본값 : UUID)
+     *
+     */
+    @Getter
+    @Setter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class RequestInfo extends CategoryVO {
+
+        @Pattern(regexp = "[A-Z0-9]{32}$", message = "카테고리 아이디를 입력해주세요.")
+        private String categoryId;
+
+    }
+
 
     /*
      *  CategoryDto.RequestInsert : 등록할 카테고리 정보

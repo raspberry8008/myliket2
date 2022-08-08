@@ -12,7 +12,7 @@ public interface CategoryDAO {
      * 카테고리 전체 목록 조회
      * methodName : allCategoryList
      *
-     * @return List<Category.ResponseInfo> 카테고리 목록
+     * @return List<?> 카테고리 목록
      */
     List<CategoryVO> allCategoryList () throws Exception;
 
@@ -21,7 +21,7 @@ public interface CategoryDAO {
      * methodName : getCategoryDetail
      *
      * @param categoryVO 요청한 카테고리 아이디
-     * @return Category.ResponseInfo(Object) 카테고리 상세정보
+     * @return categoryVO(Object) 카테고리 상세정보
      */
     CategoryVO getCategoryDetail (CategoryVO categoryVO) throws Exception;
 

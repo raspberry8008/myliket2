@@ -4,15 +4,14 @@ import com.myliket2.myliket.domain.vo.TodoVO;
 
 import java.util.List;
 
-//@Mapper
-//@Repository
+
 public interface TodoDAO {
 
     /**
      * 전체 카테고리의 할일을 조회 한다.
      * methodName : allTodoList
      *
-     * @return List<ResponseInfo> 할일 목록
+     * @return List<?> 할일 목록
      */
     List<TodoVO> allTodoList () throws Exception;
 
@@ -20,7 +19,7 @@ public interface TodoDAO {
      * 카테고리 {categoryId} 에 대한 전체 할일을 조회
      * methodName : getCategoryTodoList
      *
-     * @return List<ResponseInfo> 할일 목록
+     * @return List<?> 할일 목록
      */
     List<TodoVO> getCategoryTodoList (TodoVO todoVO) throws Exception;
 
@@ -29,7 +28,7 @@ public interface TodoDAO {
      * methodName : getTodoDetail
      *
      * @param todoVO 요청한 할일의 고유번호
-     * @return ResponseInfo(Object) 할일 상세정보
+     * @return TodoVO(Object) 할일 상세정보
      */
     TodoVO getTodoDetail (TodoVO todoVO) throws Exception;
 

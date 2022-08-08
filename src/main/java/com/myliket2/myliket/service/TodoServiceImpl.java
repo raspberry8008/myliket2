@@ -2,17 +2,15 @@ package com.myliket2.myliket.service;
 
 import com.myliket2.myliket.dao.TodoDAO;
 import com.myliket2.myliket.domain.dto.Response;
-import com.myliket2.myliket.domain.dto.TodoDto;
 import com.myliket2.myliket.domain.vo.TodoVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class TodoServiceImpl implements TodoService{
+public class TodoServiceImpl implements TodoService {
 
     private final TodoDAO todoDAO;
 
@@ -27,17 +25,17 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
-    public Response getCategoryTodoList (TodoVO todoVO) throws Exception {
+    public Response getCategoryTodoList(TodoVO todoVO) throws Exception {
         List<TodoVO> resultList = todoDAO.getCategoryTodoList(todoVO);
         return Response.builder().resultList(resultList).build();
     }
 
     @Override
     public Response getTodoDetail(TodoVO todoVO) throws Exception {
-        TodoDto.TodoInfo resultVO = (TodoDto.TodoInfo) todoDAO.getTodoDetail(todoVO);
+        TodoVO resultVO = todoDAO.getTodoDetail(todoVO);
 
         if (ObjectUtils.isEmpty(resultVO)) {
-            TodoVO resultVO1= TodoVO.builder().build();
+            TodoVO resultVO1 = TodoVO.builder().build();
             return Response.builder().data(resultVO1).build();
         }
 

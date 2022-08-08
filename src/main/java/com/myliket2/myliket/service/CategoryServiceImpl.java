@@ -3,7 +3,6 @@ package com.myliket2.myliket.service;
 import com.myliket2.myliket.dao.CategoryDAO;
 import com.myliket2.myliket.domain.dto.Response;
 import com.myliket2.myliket.domain.vo.CategoryVO;
-import com.myliket2.myliket.domain.vo.TodoVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -14,7 +13,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryDAO categoryDAO;
 
-    public CategoryServiceImpl(CategoryDAO categoryDAO) {this.categoryDAO = categoryDAO;}
+    public CategoryServiceImpl(CategoryDAO categoryDAO) {
+        this.categoryDAO = categoryDAO;
+    }
 
 
     @Override
@@ -33,6 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
         } else {
             return Response.builder().data(resultVO).build();
         }
+
     }
 
     @Transactional
