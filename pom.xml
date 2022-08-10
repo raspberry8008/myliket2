@@ -8,10 +8,11 @@
 		<version>2.7.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.myliket2</groupId>
-	<artifactId>myliket</artifactId>
+	<groupId>com.myliket</groupId>
+	<artifactId>myliket2</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>myliket</name>
+	<packaging>war</packaging>
+	<name>myliket2</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>1.8</java.version>

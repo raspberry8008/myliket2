@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.myliket2.myliket.CategoryMapper">
+
+    <!-- allCategoryList: 카테고리 전체조회 -->
+    <select id="allCategoryList"  resultType="CategoryVO">
+        /*allCategoryList*/
+        SELECT
+            HEX(categoryId) AS categoryId
+             , categoryName
+             , stateKor
+        FROM
+            category AS c
+            , grbstate AS g
+        WHERE
+            c.categoryState = g.stateCode
+        GROUP BY
+            categoryId
+        ORDER BY
+            categoryCreatedAt ASC
+    </select>
+
+    <!-- getCategoryDetail : 카테고리 상세조회 -->
+    <select id="getCategoryDetail" parameterType="CategoryVO" resultType="CategoryVO">
+        /*getCategoryDetail*/
+        SELECT
+            HEX(categoryId) AS categoryId
+             , categoryName
+             , stateKor
+        FROM
+            category AS c
+           , grbstate AS g
+        WHERE
+            HEX(categoryId) = #{categoryId}
+        AND
+            c.categoryState = g.stateCode
+    </select>
+
+    <!-- insertCategory : 카테고리 등록하기 -->
+    <insert id="insertCategory" parameterType="CategoryVO"  >
+        /*insertCategory*/
+        INSERT INTO
+            category
+            (
+                categoryId
+                , categoryName
+                , categoryState
+                , categoryCreatedAt
+                , categoryUpdatedAt
+            )
+
+		VALUES
+			(
+                UNHEX(#{categoryId})
+              , #{categoryName}
+              , 'CY'
+              , now()
+              , now()
+        )
+    </insert>
+
+    <!-- updateCategory : 카테고리 수정하기 -->
+    <update id="updateCategory" parameterType="CategoryVO">
+        /*updateCategory*/
+        UPDATE
+            category
+        SET
+            categoryName=#{categoryName}
+          , categoryState=#{categoryState}
+          , categoryUpdatedAt=now()
+        WHERE
+            HEX(categoryId) = #{categoryId}
+    </update>
+
+    <!--deleteCategory : 카테고리 삭제 -->
+    <delete id="deleteCategory" parameterType="CategoryVO" >
+        /*deleteCategory*/
+        DELETE
+        FROM
+            category
+        WHERE
+            HEX(categoryId) = #{categoryId}
+    </delete>
+
+</mapper>

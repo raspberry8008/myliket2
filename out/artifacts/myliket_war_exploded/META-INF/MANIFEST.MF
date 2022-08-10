@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Created-By: IntelliJ IDEA
+Built-By: namgunghyeseo
+Build-Jdk: Azul Zulu version 1.8.0_332
+Implementation-Title: myliket
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: com.myliket2
+Main-Class: ${start-class}
+
