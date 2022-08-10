@@ -33,7 +33,7 @@ public interface CategoryService {
     /**
      * 카테고리 수정
      * methodName : updateCategory
-     * @param categoryVO(Object) 수정할 카테고리 정보
+     * @param categoryVO 수정할 카테고리 정보
      */
     void updateCategory(CategoryVO categoryVO) throws Exception;
 
